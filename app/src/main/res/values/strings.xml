@@ -5,11 +5,16 @@
     <string name="tab_text_3">Images</string>
     <string name="tab_text_4">Tab4</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="title01">number 1 : pink image</string>
-    <string name="title02">number 2 : yellow image</string>
-    <string name="title03">number 3 : purple image</string>
+    <!-- HOME tab text -->
+    <string name="home_tab">별 버튼을 눌러보세요</string>
+
+    <!-- IMAGES tab text -->
+    <string name="title01">Pink Image</string>
+    <string name="title02">Yellow Image</string>
+    <string name="title03">Purple Image</string>
+    <string name="title04">Orange Image</string>
+    <string name="title05">Green Image</string>
 
 </resources>

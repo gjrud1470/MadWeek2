@@ -14,24 +14,33 @@ class ImageFragment : Fragment() {
     val image_list : ArrayList<ImageItem> = ArrayList()
     lateinit var ImageRecyclerView : RecyclerView
 
+    var isfirst : Boolean = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
 
-        image_list.add(ImageItem(getResources().getDrawable(R.drawable.image01)!!, getString(R.string.title01)))
-        image_list.add(ImageItem(getResources().getDrawable(R.drawable.image02)!!, getString(R.string.title02)))
-        image_list.add(ImageItem(getResources().getDrawable(R.drawable.image03)!!, getString(R.string.title03)))
+        if (isfirst) {
+            add_init()
+            isfirst = false
+        }
 
         var rootView = inflater.inflate(R.layout.fragment_image, container, false)
 
         ImageRecyclerView = rootView.findViewById(R.id.recyclerView!!)as RecyclerView
-        ImageRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         ImageRecyclerView.adapter = ImageRecyclerAdapter(image_list)
 
         return rootView
+    }
 
+    fun add_init(){
+        image_list.add(ImageItem(getResources().getDrawable(R.drawable.image01)!!, getString(R.string.title01)))
+        image_list.add(ImageItem(getResources().getDrawable(R.drawable.image02)!!, getString(R.string.title02)))
+        image_list.add(ImageItem(getResources().getDrawable(R.drawable.image03)!!, getString(R.string.title03)))
+        image_list.add(ImageItem(getResources().getDrawable(R.drawable.image04)!!, getString(R.string.title04)))
+        image_list.add(ImageItem(getResources().getDrawable(R.drawable.image05)!!, getString(R.string.title05)))
     }
 
 
