@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,16 +9,10 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/plusbutton"
+        android:id="@+id/uploadbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Insert" />
-
-    <Button
-        android:id="@+id/minusbutton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete" />
+        android:text="Upload" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

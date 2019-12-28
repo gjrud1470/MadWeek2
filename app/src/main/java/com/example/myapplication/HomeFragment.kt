@@ -23,7 +23,7 @@ class HomeFragment : Fragment() {
 
         val fab: FloatingActionButton = v.findViewById(R.id.fab)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "안녕", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "안녕", Snackbar.LENGTH_SHORT)
                 .setAction("Action", null).show()
         }
 
