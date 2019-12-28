@@ -4,6 +4,7 @@ package com.example.myapplication
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -43,7 +44,7 @@ class ImageFragment : Fragment() {
         uploadButton.setOnClickListener {
             Toast.makeText(getContext(), "upload image from gallery", Toast.LENGTH_SHORT).show()
 
-            //loadImage()
+            loadImage()
 
         }
 
@@ -71,15 +72,13 @@ class ImageFragment : Fragment() {
             var packName = getActivity()!!.getPackageName()
             var resID = getResources().getIdentifier(imageStr, "drawable", packName)
             var textID = getResources().getIdentifier(titleStr,"string",packName)
+            val resBitmap = BitmapFactory.decodeResource(getResources(), resID)
 
-
-
-            image_list.add(ImageItem(getResources().getDrawable(resID)!!, getString(textID)))
+            image_list.add(ImageItem(resBitmap, getString(textID)))
         }
     }
-}
 
-/*
+
     val Gallery = 0
 
     fun loadImage(){
@@ -98,8 +97,8 @@ class ImageFragment : Fragment() {
             if(resultCode == RESULT_OK){
                 var dataUri : Uri? = data?.data
                 try{
+                    val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(getActivity().contentResolver, dataUri)
 
-                    val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(this., dataUri)
                 }catch (e:Exception){
                     Toast.makeText(getContext(), "$e", Toast.LENGTH_SHORT).show()
                 }
@@ -111,4 +110,5 @@ class ImageFragment : Fragment() {
 
 
     }
-*/
+
+}

@@ -39,7 +39,7 @@ class ImageRecyclerAdapter(private val items: ArrayList<ImageItem>) :
         private var view: View = v
 
         fun bind(listener: View.OnClickListener, item: ImageItem) {
-            view.thumbnail.setImageDrawable(item.image)
+            view.thumbnail.setImageBitmap(item.image)
             view.title.text = item.title
             view.setOnClickListener(listener)
         }
