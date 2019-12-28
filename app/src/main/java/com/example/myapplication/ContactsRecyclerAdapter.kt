@@ -1,27 +1,29 @@
 package com.example.myapplication
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.AdapterView.OnItemClickListener
-import android.widget.CursorAdapter
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.ImageViewCompat
 import kotlinx.android.synthetic.main.contacts_list_item.view.*
+import kotlin.random.Random
 
 
 class ContactsRecyclerAdapter(private val myDataset: ArrayList<ContactModel>) :
     RecyclerView.Adapter<ContactsRecyclerAdapter.MyViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(view: View?, position: Int)
+        fun onItemClick(view : View?, data : ContactModel) {
+            ContactsItemFragment (view, data)
+        }
     }
 
     private var mListener : ContactsRecyclerAdapter.OnItemClickListener? = null
 
-    fun setOnItemClickListener(listener: OnItemClickListener) {
+    public fun setOnItemClickListener(listener: OnItemClickListener) {
         this.mListener = listener
     }
 
@@ -32,10 +34,11 @@ class ContactsRecyclerAdapter(private val myDataset: ArrayList<ContactModel>) :
                 val pos = adapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     // 리스너 객체의 메서드 호출.
-                    //myDataset[pos] = "item clicked. pos=${pos}"
-                    if (mListener != null)
-                        mListener?.onItemClick(v, pos)
-                    notifyItemChanged(pos)
+                    ContactsItemFragment(view, myDataset[pos])
+                    //myDataset[pos].name = "item clicked. pos=${pos}"
+                    //if (mListener != null)
+                    //    mListener?.onItemClick(view, myDataset[pos])
+                    //notifyItemChanged(pos)
                 }
             }
         }
@@ -56,8 +59,19 @@ class ContactsRecyclerAdapter(private val myDataset: ArrayList<ContactModel>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.view.text1.text = myDataset[position].name
-        holder.view.imageView1.src =
+        holder.view.contactname1.text = myDataset[position].name
+        holder.view.phonenumber1.text = myDataset[position].mobileNumber
+        val rnd = Random
+        val randomcolor : Int = Color.argb(20, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+
+        if (myDataset[position].photo != null){
+            holder.view.thumbnail1.setImageBitmap(myDataset[position].photo)
+            ImageViewCompat.setImageTintList(holder.view.thumbnail1, null)
+        }
+        else {
+            holder.view.thumbnail1.setImageResource(R.drawable.default_profile)
+            ImageViewCompat.setImageTintList(holder.view.thumbnail1, ColorStateList.valueOf(randomcolor))
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

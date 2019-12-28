@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.ContentUris
@@ -27,7 +28,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.CursorAdapter
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.lifecycle.ViewModelProviders
 import androidx.loader.content.CursorLoader
+import com.example.myapplication.ui.main.PageViewModel
 import java.io.InputStream
 
 
@@ -100,10 +106,63 @@ class ContactsFragment :
     // An adapter that binds the result Cursor to the ListView
     private val cursorAdapter: SimpleCursorAdapter? = null
 
+
+    private val TAG = "PermissionDemo"
+    private val READ_REQUEST_CODE = 100
+
+    private fun setupPermissions() {
+        val permission = checkSelfPermission(context!!,
+            Manifest.permission.READ_CONTACTS)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission to record denied")
+            makeRequest()
+        }
+        else {
+            SetupContactsView ()
+        }
+    }
+
+    private fun makeRequest() {
+        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS),
+            READ_REQUEST_CODE)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            READ_REQUEST_CODE -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Log.i(TAG, "Permission has been granted by user")
+                    //SetupContactsView ()
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Log.i(TAG, "Permission has been denied by user")
+                    //requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS),
+                    //    READ_REQUEST_CODE)
+                }
+                return
+            }
+
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //onRequestPermissionsResult(100, arrayOf(Manifest.permission.READ_CONTACTS), IntArray(ContextCompat.checkSelfPermission(requireContext(),
+        //Manifest.permission.READ_CONTACTS)))
+        //setupPermissions()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_contacts, container, false)
     }
@@ -111,13 +170,13 @@ class ContactsFragment :
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        /*
-        for (i in 0..99) {
-            contacts_list.add(String.format("TEXT %d", i))
-        }*/
+        setupPermissions() //contacts_list = getContacts(requireContext())
+    }
+
+    private fun SetupContactsView () {
+        // Gets the RecycleView from the View list of the parent activity
         contacts_list = getContacts(requireContext())
 
-        // Gets the RecycleView from the View list of the parent activity
         activity?.also {
             viewManager = LinearLayoutManager(requireContext())
             viewAdapter = ContactsRecyclerAdapter(contacts_list)
@@ -200,7 +259,7 @@ class ContactsFragment :
                     if (inputStream != null) {
                         photo = BitmapFactory.decodeStream(inputStream)
                     }
-                    while (cursorInfo!!.moveToNext()) {
+                    if (cursorInfo!!.moveToNext()) {
                         var info : ContactModel = ContactModel()
                         info.id = id
                         info.name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
@@ -215,7 +274,7 @@ class ContactsFragment :
             }
             cursor.close()
         }
-        return list
+        return ArrayList(list.sortedWith(compareBy({it.name})))
     }
 
 
