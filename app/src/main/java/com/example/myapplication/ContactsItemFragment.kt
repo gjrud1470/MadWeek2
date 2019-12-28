@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-class ContactsItemFragment (private val parent_view : View?, private val data : ContactModel) : Fragment() {
+class ContactsItemFragment (private val parent_view : View?, private val data : ContactModel?) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

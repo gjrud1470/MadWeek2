@@ -28,12 +28,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.CursorAdapter
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.lifecycle.ViewModelProviders
 import androidx.loader.content.CursorLoader
+import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.ui.main.PageViewModel
+import kotlinx.android.synthetic.main.fragment_image.*
 import java.io.InputStream
 
 
@@ -87,7 +90,8 @@ class ContactModel {
 
 class ContactsFragment :
     Fragment(),
-    LoaderManager.LoaderCallbacks<Cursor> {
+    LoaderManager.LoaderCallbacks<Cursor>,
+    ContactsRecyclerAdapter.OnListItemSelectedInterface {
 
     var contacts_list : ArrayList<ContactModel> = ArrayList()
     // Define global mutable variables
@@ -179,7 +183,7 @@ class ContactsFragment :
 
         activity?.also {
             viewManager = LinearLayoutManager(requireContext())
-            viewAdapter = ContactsRecyclerAdapter(contacts_list)
+            viewAdapter = ContactsRecyclerAdapter(requireContext(), this, contacts_list)
             /*
             viewAdapter.setOnItemClickListener(object : ContactsRecyclerAdapter.OnItemClickListener {
                 override fun onItemClick(parent: AdapterView<*>, view: View?, position: Int) {
@@ -208,6 +212,13 @@ class ContactsFragment :
         }
 
         loaderManager.initLoader(0, null, this)
+    }
+
+    override fun onItemSelected(view: View, position: Int) {
+        //var viewHolder : ContactsRecyclerAdapter.MyViewHolder = recyclerView.findViewHolderForAdapterPosition(position) as ContactsRecyclerAdapter.MyViewHolder
+        //val sectionsPagerAdapter = ContactsItemFragment (view, contacts_list[position])
+        //val viewPager: ViewPager = view.findViewById(R.id.view_pager)
+        //viewPager.adapter = sectionsPagerAdapter
     }
 
     override fun onCreateLoader(loaderId: Int, args: Bundle?): androidx.loader.content.Loader<Cursor> {
