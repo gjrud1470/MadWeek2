@@ -3,10 +3,7 @@ package com.example.myapplication
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentResolver
-import android.content.ContentUris
-import android.content.Context
-import android.content.Loader
+import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -215,10 +212,9 @@ class ContactsFragment :
     }
 
     override fun onItemSelected(view: View, position: Int) {
-        //var viewHolder : ContactsRecyclerAdapter.MyViewHolder = recyclerView.findViewHolderForAdapterPosition(position) as ContactsRecyclerAdapter.MyViewHolder
         //val sectionsPagerAdapter = ContactsItemFragment (view, contacts_list[position])
-        //val viewPager: ViewPager = view.findViewById(R.id.view_pager)
-        //viewPager.adapter = sectionsPagerAdapter
+        val intent = Intent (activity, ContactInformation::class.java)
+        startActivity(intent)
     }
 
     override fun onCreateLoader(loaderId: Int, args: Bundle?): androidx.loader.content.Loader<Cursor> {
