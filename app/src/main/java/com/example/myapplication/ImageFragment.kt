@@ -97,7 +97,9 @@ class ImageFragment : Fragment() {
             if(resultCode == RESULT_OK){
                 var dataUri : Uri? = data?.data
                 try{
-                    val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(getActivity().contentResolver, dataUri)
+                    val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(getActivity()!!.getContentResolver(), dataUri)
+
+                    image_list.add(ImageItem(bitmap, "new image"))
 
                 }catch (e:Exception){
                     Toast.makeText(getContext(), "$e", Toast.LENGTH_SHORT).show()
