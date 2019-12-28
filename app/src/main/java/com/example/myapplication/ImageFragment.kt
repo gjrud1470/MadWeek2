@@ -42,10 +42,8 @@ class ImageFragment : Fragment() {
         // 업로드 버튼 - 클릭 시 사진 추가 가능
         var uploadButton : Button = rootView.findViewById(R.id.uploadbutton)
         uploadButton.setOnClickListener {
-            Toast.makeText(getContext(), "upload image from gallery", Toast.LENGTH_SHORT).show()
-
+            Toast.makeText(getContext(), "select image in your gallery", Toast.LENGTH_SHORT).show()
             loadImage()
-
         }
 
         // 이미지는 recycler view로 구현
@@ -55,11 +53,11 @@ class ImageFragment : Fragment() {
         return rootView
     }
 
+    var imgNum = 10
+
     fun add_init(){
 
-        var initNum = 10
-
-        for(i in 1..initNum){
+        for(i in 1..imgNum){
             var imageStr = "image"
             var titleStr = "title"
             if(i < 10) {
@@ -96,21 +94,25 @@ class ImageFragment : Fragment() {
         if(requestCode == Gallery){
             if(resultCode == RESULT_OK){
                 var dataUri : Uri? = data?.data
+
+                // 갤러리에서 사진 불러오기
                 try{
                     val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(getActivity()!!.getContentResolver(), dataUri)
-
                     image_list.add(ImageItem(bitmap, "new image"))
 
+                    // 리스트에 추가한 후 recycler view에 반영 (맨 뒤에 추가함)
+                    ImageRecyclerView.adapter!!.notifyItemInserted(imgNum)
+                    imgNum++
+
+                    Toast.makeText(getContext(), "upload success", Toast.LENGTH_SHORT).show()
                 }catch (e:Exception){
                     Toast.makeText(getContext(), "$e", Toast.LENGTH_SHORT).show()
                 }
             }
             else{
-
+                Toast.makeText(getContext(), "fail", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 
 }
