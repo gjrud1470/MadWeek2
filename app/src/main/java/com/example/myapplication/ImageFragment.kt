@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Layout
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import android.widget.Gallery
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.recyclerview.widget.*
+import kotlinx.android.synthetic.main.fragment_image.*
 
 class ImageFragment : Fragment() {
 
@@ -25,6 +27,8 @@ class ImageFragment : Fragment() {
 
     var isfirst : Boolean = true
 
+
+    lateinit var rootView : View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +41,7 @@ class ImageFragment : Fragment() {
             isfirst = false
         }
 
-        var rootView = inflater.inflate(R.layout.fragment_image, container, false)
+        rootView = inflater.inflate(R.layout.fragment_image, container, false)
 
         // 업로드 버튼 - 클릭 시 사진 추가 가능
         var uploadButton : Button = rootView.findViewById(R.id.uploadbutton)
@@ -97,7 +101,13 @@ class ImageFragment : Fragment() {
 
                 // 갤러리에서 사진 불러오기
                 try{
-                    val bitmap : Bitmap = MediaStore.Images.Media.getBitmap(getActivity()!!.getContentResolver(), dataUri)
+                    var bitmap : Bitmap = MediaStore.Images.Media.getBitmap(getActivity()!!.getContentResolver(), dataUri)
+
+                    var v = rootView.findViewById(R.id.recyclerView!!) as RecyclerView
+                    var width = v.getWidth()/3
+
+                    bitmap = Bitmap.createScaledBitmap(bitmap, width, width, true)
+
                     image_list.add(ImageItem(bitmap, "new image"))
 
                     // 리스트에 추가한 후 recycler view에 반영 (맨 뒤에 추가함)
