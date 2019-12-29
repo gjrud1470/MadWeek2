@@ -1,11 +1,15 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.content.*
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_imageitem.view.*
+import java.security.AccessController.getContext
 
 class ImageRecyclerAdapter(private val items: ArrayList<ImageItem>) :
     RecyclerView.Adapter<ImageRecyclerAdapter.ViewHolder>() {
@@ -23,6 +27,11 @@ class ImageRecyclerAdapter(private val items: ArrayList<ImageItem>) :
             bind(listener, item)
             itemView.tag = item
         }
+
+        fun onClick(v : View){
+            val intent = Intent(v.getContext(), ImageInformation::class.java)
+            v.getContext().startActivity(intent)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
@@ -35,7 +44,7 @@ class ImageRecyclerAdapter(private val items: ArrayList<ImageItem>) :
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
-        private var view: View = v
+        var view :View = v
 
         fun bind(listener: View.OnClickListener, item: ImageItem) {
             view.thumbnail.setImageBitmap(item.image)
