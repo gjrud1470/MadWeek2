@@ -12,7 +12,6 @@ class ImageRecyclerAdapter(private val items: ArrayList<ImageItem>) :
 
     override fun getItemCount(): Int {
         return items.size
-        //return 3
     }
 
     override fun onBindViewHolder(holder: ImageRecyclerAdapter.ViewHolder, position: Int) {
