@@ -27,8 +27,10 @@ class ImageFragment : Fragment() {
 
     var isfirst : Boolean = true
 
-
     lateinit var rootView : View
+
+    var initImgNum = 13
+    var totalImgNum = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +40,7 @@ class ImageFragment : Fragment() {
         // 탭을 처음 실행했을 때만 디폴트 이미지 생성(추가)
         if (isfirst) {
             add_init()
+            totalImgNum = initImgNum
             isfirst = false
         }
 
@@ -57,11 +60,10 @@ class ImageFragment : Fragment() {
         return rootView
     }
 
-    var imgNum = 10
 
     fun add_init(){
 
-        for(i in 1..imgNum){
+        for(i in 1..initImgNum){
             var imageStr = "image"
             var titleStr = "title"
             if(i < 10) {
@@ -74,7 +76,7 @@ class ImageFragment : Fragment() {
             var packName = getActivity()!!.getPackageName()
             var resID = getResources().getIdentifier(imageStr, "drawable", packName)
             var textID = getResources().getIdentifier(titleStr,"string",packName)
-            val resBitmap = BitmapFactory.decodeResource(getResources(), resID)
+            var resBitmap = BitmapFactory.decodeResource(getResources(), resID)
 
             image_list.add(ImageItem(resBitmap, getString(textID)))
         }
@@ -104,15 +106,17 @@ class ImageFragment : Fragment() {
                     var bitmap : Bitmap = MediaStore.Images.Media.getBitmap(getActivity()!!.getContentResolver(), dataUri)
 
                     var v = rootView.findViewById(R.id.recyclerView!!) as RecyclerView
-                    var width = v.getWidth()/3
+                    var siz = v.getWidth()/3
 
-                    bitmap = Bitmap.createScaledBitmap(bitmap, width, width, true)
+                    bitmap = Bitmap.createScaledBitmap(bitmap, siz, siz, true)
 
-                    image_list.add(ImageItem(bitmap, "new image"))
+                    var titleStr = "new Image "+(totalImgNum+1-initImgNum)
+
+                    image_list.add(ImageItem(bitmap, titleStr))
 
                     // 리스트에 추가한 후 recycler view에 반영 (맨 뒤에 추가함)
-                    ImageRecyclerView.adapter!!.notifyItemInserted(imgNum)
-                    imgNum++
+                    ImageRecyclerView.adapter!!.notifyItemInserted(totalImgNum)
+                    totalImgNum++
 
                     Toast.makeText(getContext(), "upload success", Toast.LENGTH_SHORT).show()
                 }catch (e:Exception){
