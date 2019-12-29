@@ -41,6 +41,8 @@
                 android:layout_marginTop="8dp"
                 android:textSize="22sp"
                 android:textStyle="bold"
+                android:ellipsize="end"
+                android:singleLine="true"
                 app:fontFamily="sans-serif"
                 app:layout_constraintLeft_toRightOf="@+id/thumbnail1"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -52,6 +54,8 @@
                 android:layout_marginBottom="10dp"
                 android:id="@+id/phonenumber1"
                 android:textSize="18sp"
+                android:ellipsize="end"
+                android:singleLine="true"
                 app:fontFamily="sans-serif"
                 app:layout_constraintLeft_toRightOf="@+id/thumbnail1"
                 app:layout_constraintBottom_toBottomOf="parent"/>

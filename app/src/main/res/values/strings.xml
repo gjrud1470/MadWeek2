@@ -10,6 +10,10 @@
     <!-- HOME tab text -->
     <string name="home_tab">별 버튼을 눌러보세요</string>
 
+    <!-- CONTACTS tab text -->
+    <string name="text_korean_number">휴대전화</string>
+    <string name="text_korean_group">그룹</string>
+
     <!-- IMAGES tab text -->
     <string name="title01">Pink Image</string>
     <string name="title02">Yellow Image</string>

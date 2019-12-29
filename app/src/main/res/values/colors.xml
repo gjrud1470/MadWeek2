@@ -6,5 +6,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="screenBackground">#BFC0C9</color>
     <color name="imageBackground">#FFFFFF</color>
+    <color name="text_gray">#B1B1B1</color>
+    <color name="contact_infoBackground">#EBEAE1</color>
 
 </resources>
