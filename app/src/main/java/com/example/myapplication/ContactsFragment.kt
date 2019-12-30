@@ -25,10 +25,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.CursorAdapter
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.content.ContextCompat.startActivity
 import androidx.loader.content.CursorLoader
 import java.io.InputStream
 import java.io.Serializable
@@ -52,7 +55,7 @@ class ContactsHolder {
 
 var ContactHolder = ContactsHolder()
 
-class ContactModel : Serializable{
+class ContactModel{
     var id: String? = null
     var name: String? = null
     var mobileNumber: String? = null
@@ -74,35 +77,45 @@ class ContactsFragment :
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     private val TAG = "ContactsFragment"
-    private val READ_REQUEST_CODE = 100
+    private val PERM_REQUEST_CODE = 100
 
-    private fun setupPermissions() {
-        val permission = checkSelfPermission(context!!,
-            Manifest.permission.READ_CONTACTS)
+    fun hasPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
+        checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
 
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Permission to record denied")
+    private fun setupPermissions() : Boolean{
+        val permissions = arrayOf(
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.CALL_PHONE
+        )
+
+        if (!hasPermissions(context!!, permissions)) {
+            Log.i(TAG, "Permission denied")
             makeRequest()
+            return false
         }
         else {
-            SetupContactsView (true)
+            getcontact_list()
+            return true
         }
     }
 
     private fun makeRequest() {
-        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS),
-            READ_REQUEST_CODE)
+        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE),
+            PERM_REQUEST_CODE)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
-            READ_REQUEST_CODE -> {
+            PERM_REQUEST_CODE -> {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     Log.i(TAG, "Permission has been granted by user")
+                    getcontact_list()
+                    SetupContactsView()
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -111,8 +124,6 @@ class ContactsFragment :
                 return
             }
 
-            // Add other 'when' lines to check for other
-            // permissions this app might request.
             else -> {
                 // Ignore all other requests.
             }
@@ -130,35 +141,22 @@ class ContactsFragment :
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        if (savedInstanceState != null && savedInstanceState.getBoolean("CONTACT_UPDATED")) {
-            SetupContactsView(false)
+        if (setupPermissions()) {
+            SetupContactsView()
         }
-        else
-            setupPermissions()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        if (contact_flag)
-            outState.putBoolean("CONTACT_UPDATED", true)
-        super.onSaveInstanceState(outState)
-    }
-
-    private fun SetupContactsView (update_contact: Boolean) {
-        if (update_contact) {
-            contacts_list = getContacts(requireContext())
-            contact_flag = true
-            Log.wtf(TAG, "Got Contacts")
-            ContactHolder.setDataList(contacts_list)
-        }
-
+    private fun SetupContactsView () {
         activity?.also {
             viewManager = LinearLayoutManager(requireContext())
             viewAdapter = ContactsRecyclerAdapter(requireContext(), this, contacts_list)
+            Log.i("HELLO", "print size ${contacts_list.size}")
             ContactsRecyclerView = it.findViewById<RecyclerView>(R.id.my_recycler_view).apply {
                 setHasFixedSize(true)
                 layoutManager = viewManager
                 adapter = viewAdapter
             }
+            activity?.findViewById<FrameLayout>(R.id.fragment_contacts)?.invalidate()
         }
     }
 
@@ -168,7 +166,23 @@ class ContactsFragment :
         startActivity(intent)
     }
 
-    public fun getContacts(ctx : Context) : ArrayList<ContactModel> {
+    override fun callOnClick(view: View, position: Int) {
+        val intent = Intent (Intent.ACTION_CALL, Uri.fromParts("tel", ContactHolder.getDataById(position).mobileNumber, null))
+        startActivity(intent)
+    }
+
+    fun getcontact_list() {
+        Log.wtf(TAG, "Getting Contacts")
+        contacts_list = getContacts(requireContext())
+        contact_flag = true
+
+        ContactHolder.setDataList(contacts_list)
+
+        Log.wtf(TAG, "Refreshing Layout")
+        //activity?.findViewById<FrameLayout>(R.id.fragment_contacts)?.invalidate()
+    }
+
+    fun getContacts(ctx : Context) : ArrayList<ContactModel> {
         var list : ArrayList<ContactModel> = ArrayList()
         var contentResolver : ContentResolver = ctx.getContentResolver()
         var cursor : Cursor? = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)

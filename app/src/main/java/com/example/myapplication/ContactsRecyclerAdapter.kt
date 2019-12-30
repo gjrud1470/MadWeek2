@@ -15,8 +15,10 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.nfc.Tag
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.mikhaellopez.circularimageview.CircularImageView
 
 
 class ContactsRecyclerAdapter(private val context : Context,
@@ -26,6 +28,7 @@ class ContactsRecyclerAdapter(private val context : Context,
 
     interface OnListItemSelectedInterface {
         fun onItemSelected(view : View, position : Int)
+        fun callOnClick(view : View, position : Int)
     }
 
     private var mListener : OnListItemSelectedInterface = listener
@@ -35,7 +38,13 @@ class ContactsRecyclerAdapter(private val context : Context,
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //var textView: TextView
         init {
-            //this.textView = itemView.findViewById(R.id. )
+            var call_view : CircularImageView = itemView.findViewById(R.id.button_call)
+            call_view.setOnClickListener { v ->
+                val position = adapterPosition
+                mListener.callOnClick (v, position)
+
+                Log.d("viewholder", "position = $adapterPosition")
+            }
             itemView.setOnClickListener { v ->
                 val position = adapterPosition
                 mListener.onItemSelected(v, position)
@@ -78,8 +87,8 @@ class ContactsRecyclerAdapter(private val context : Context,
             //ImageViewCompat.setImageTintList(holder.itemView.thumbnail1, ColorStateList.valueOf(randomcolor))
             //var drawable : Drawable? = ContextCompat.getDrawable(context, R.drawable.default_profile)
             //drawable?.setColorFilter(PorterDuffColorFilter(randomcolor, PorterDuff.Mode.SRC_ATOP))
-
         }
+
     }
 
     private fun tintImage(bitmap: Bitmap, color: Int): Bitmap {

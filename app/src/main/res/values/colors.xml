@@ -8,5 +8,8 @@
     <color name="imageBackground">#FFFFFF</color>
     <color name="text_gray">#B1B1B1</color>
     <color name="contact_infoBackground">#EBEAE1</color>
+    <color name="text_icon_color">#FFD53B</color>
+    <color name="call_icon_color">#02BE57</color>
+    <color name="gray_border">#DBDBDB</color>
 
 </resources>

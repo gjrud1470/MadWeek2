@@ -1,10 +1,16 @@
 package com.example.myapplication
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.mikhaellopez.circularimageview.CircularImageView
 
 class ContactInformation : AppCompatActivity() {
@@ -16,6 +22,11 @@ class ContactInformation : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_information)
 
+        SetupView()
+        SetupButtons()
+    }
+
+    private fun SetupView() {
         var pos = intent.getIntExtra("POS", 0)
         contact = ContactHolder.getDataById(pos)
 
@@ -32,5 +43,32 @@ class ContactInformation : AppCompatActivity() {
 
         var GroupText: TextView = findViewById(R.id.info_group)
         GroupText.text = contact.group
+    }
+
+    private fun SetupButtons() {
+        var call_icon_view : ImageView = findViewById(R.id.info_button_call)
+
+        call_icon_view.setOnClickListener { v ->
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                val intent = Intent (Intent.ACTION_CALL, Uri.fromParts("tel", contact.mobileNumber, null))
+                startActivity(intent)
+            }
+            else {
+                val intent = Intent (Intent.ACTION_DIAL, Uri.fromParts("tel", contact.mobileNumber, null))
+                startActivity(intent)
+            }
+        }
+
+        var text_icon_view : ImageView = findViewById(R.id.info_button_text)
+        text_icon_view.setOnClickListener { v ->
+            val intent = Intent (Intent.ACTION_VIEW)
+            intent.setData(Uri.parse("sms:${contact.mobileNumber}"))
+            startActivity(intent)
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }
