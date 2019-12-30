@@ -11,7 +11,8 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/home_tab"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/imageBackground"
+        android:background="@drawable/homeimage"
         android:textSize="24sp"></TextView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
