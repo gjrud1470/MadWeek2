@@ -2,6 +2,7 @@ package com.example.myapplication
 
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -18,6 +19,7 @@ import android.widget.Button
 import android.widget.Gallery
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getDrawable
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.*
 import kotlinx.android.synthetic.main.fragment_image.*
 
@@ -50,7 +52,7 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
 
     lateinit var rootView : View
 
-    var initImgNum = 13
+    var initImgNum = 20
     var totalImgNum = 0
 
     override fun onCreateView(
@@ -160,5 +162,6 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
             }
         }
     }
+
 
 }

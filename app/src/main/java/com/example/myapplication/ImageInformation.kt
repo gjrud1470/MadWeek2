@@ -23,4 +23,10 @@ class ImageInformation : AppCompatActivity() {
         var titleInfo : TextView = findViewById(R.id.title)
         titleInfo.text = "This is "+ thisImage.title
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
 }
