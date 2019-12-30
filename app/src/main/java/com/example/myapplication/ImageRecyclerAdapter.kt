@@ -1,47 +1,69 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.content.*
+import android.graphics.Bitmap
+import android.media.ThumbnailUtils
+import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_image.view.*
 import kotlinx.android.synthetic.main.list_imageitem.view.*
+import java.security.AccessController.getContext
 
-class ImageRecyclerAdapter(private val items: ArrayList<ImageItem>) :
+class ImageRecyclerAdapter(private val context: Context, private val listener : OnListItemSelectedInterface, private val items: ArrayList<ImageItem>) :
     RecyclerView.Adapter<ImageRecyclerAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return items.size
-        //return 3
     }
 
-    override fun onBindViewHolder(holder: ImageRecyclerAdapter.ViewHolder, position: Int) {
+    interface OnListItemSelectedInterface {
+        fun onItemSelected(view : View, position : Int)
+    }
+
+    private var mListener : OnListItemSelectedInterface = listener
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        init {
+            itemView.setOnClickListener { v ->
+                val position = adapterPosition
+                mListener.onItemSelected(v, position)
+                Log.d("test", "position = $adapterPosition")
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        val listener = View.OnClickListener {it ->
-            Toast.makeText(it.context, "Clicked: ${item.title}", Toast.LENGTH_SHORT).show()
-        }
-        holder.apply {
-            bind(listener, item)
-            itemView.tag = item
-        }
+
+        var view :View = holder.itemView
+
+        var imageWidth = item.image!!.getWidth()
+        var imageHeight = item.image!!.getHeight()
+
+        view.measure(View.MeasureSpec.makeMeasureSpec(imageWidth, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(imageHeight, View.MeasureSpec.EXACTLY))
+        var siz = view.measuredWidth
+
+        var bitmap = item.image
+        bitmap = ThumbnailUtils.extractThumbnail(bitmap, siz, siz)
+
+        //if(imageWidth>siz || imageHeight>siz)
+        //    bitmap = Bitmap.createScaledBitmap(bitmap, siz, siz, true)
+
+        view.thumbnail.setImageBitmap(bitmap)
+        view.title.text = item.title
+        view.tag = item
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ImageRecyclerAdapter.ViewHolder {
-        /*val inflatedView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_imageitem, parent, false)*/
-        return ImageRecyclerAdapter.ViewHolder(LayoutInflater.from(parent.context)
+        return ViewHolder(LayoutInflater.from(parent.context)
             .inflate(R.layout.list_imageitem, parent, false))
-    }
-
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-
-        private var view: View = v
-
-        fun bind(listener: View.OnClickListener, item: ImageItem) {
-            view.thumbnail.setImageBitmap(item.image)
-            view.title.text = item.title
-            view.setOnClickListener(listener)
-        }
     }
 }

@@ -26,9 +26,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.setContentView(R.layout.activity_main)
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, this.supportFragmentManager)
-        val viewPager: ViewPager = this.findViewById(R.id.view_pager)
+        setContentView(R.layout.activity_main)
+
+        var intent : Intent = Intent(this, SplashActivity::class.java)
+        startActivity(intent)
+
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = this.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
