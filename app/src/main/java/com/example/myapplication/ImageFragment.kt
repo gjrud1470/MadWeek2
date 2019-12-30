@@ -62,9 +62,7 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
 
         // 탭을 처음 실행했을 때만 디폴트 이미지 생성(추가)
         if (isfirst) {
-            Log.wtf("HELLO", "First init start")
             add_init()
-            Log.wtf("HELLO", "First init done")
             totalImgNum = initImgNum
             isfirst = false
         }
