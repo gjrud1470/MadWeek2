@@ -84,7 +84,7 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
     }
 
     override fun onItemSelected(view: View, position: Int){
-        Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show()
+        Toast.makeText(getContext(), "Clicked Image ${position+1}", Toast.LENGTH_SHORT).show()
         val intent = Intent(activity, ImageInformation::class.java)
         intent.putExtra("POS", position)
         startActivity(intent)
@@ -139,7 +139,7 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
                     var v = rootView.findViewById(R.id.recyclerView!!) as RecyclerView
                     var siz = v.getWidth()/3
 
-                    bitmap = Bitmap.createScaledBitmap(bitmap, siz, siz, true)
+                    //bitmap = Bitmap.createScaledBitmap(bitmap, siz, siz, true)
 
                     var titleStr = "new Image "+(totalImgNum+1-initImgNum)
 

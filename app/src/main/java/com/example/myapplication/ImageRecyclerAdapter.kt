@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import android.content.*
+import android.graphics.Bitmap
+import android.media.ThumbnailUtils
 import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_image.view.*
 import kotlinx.android.synthetic.main.list_imageitem.view.*
 import java.security.AccessController.getContext
 
@@ -40,7 +43,20 @@ class ImageRecyclerAdapter(private val context: Context, private val listener : 
 
         var view :View = holder.itemView
 
-        view.thumbnail.setImageBitmap(item.image)
+        var imageWidth = item.image!!.getWidth()
+        var imageHeight = item.image!!.getHeight()
+
+        view.measure(View.MeasureSpec.makeMeasureSpec(imageWidth, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(imageHeight, View.MeasureSpec.EXACTLY))
+        var siz = view.measuredWidth
+
+        var bitmap = item.image
+        bitmap = ThumbnailUtils.extractThumbnail(bitmap, siz, siz)
+
+        //if(imageWidth>siz || imageHeight>siz)
+        //    bitmap = Bitmap.createScaledBitmap(bitmap, siz, siz, true)
+
+        view.thumbnail.setImageBitmap(bitmap)
         view.title.text = item.title
         view.tag = item
     }
