@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Layout
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,9 +21,29 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.recyclerview.widget.*
 import kotlinx.android.synthetic.main.fragment_image.*
 
-class ImageFragment : Fragment() {
 
-    val image_list : ArrayList<ImageItem> = ArrayList()
+class ImagesHolder {
+    var image_holder: ArrayList<ImageItem> = ArrayList()
+
+    fun getDataList() : ArrayList<ImageItem> {
+        return image_holder
+    }
+
+    fun setDataList(setlist : ArrayList<ImageItem>) {
+        image_holder = setlist
+    }
+
+    fun getDataById(position: Int) : ImageItem {
+        return image_holder[position]
+    }
+}
+
+var ImageHolder = ImagesHolder()
+
+
+class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterface {
+
+    val images_list : ArrayList<ImageItem> = ArrayList()
     lateinit var ImageRecyclerView : RecyclerView
 
     var isfirst : Boolean = true
@@ -39,7 +60,9 @@ class ImageFragment : Fragment() {
 
         // 탭을 처음 실행했을 때만 디폴트 이미지 생성(추가)
         if (isfirst) {
+            Log.wtf("HELLO", "First init start")
             add_init()
+            Log.wtf("HELLO", "First init done")
             totalImgNum = initImgNum
             isfirst = false
         }
@@ -55,9 +78,16 @@ class ImageFragment : Fragment() {
 
         // 이미지는 recycler view로 구현
         ImageRecyclerView = rootView.findViewById(R.id.recyclerView!!)as RecyclerView
-        ImageRecyclerView.adapter = ImageRecyclerAdapter(image_list)
+        ImageRecyclerView.adapter = ImageRecyclerAdapter(requireContext(), this, images_list)
 
         return rootView
+    }
+
+    override fun onItemSelected(view: View, position: Int){
+        Toast.makeText(getContext(), "Clicked", Toast.LENGTH_SHORT).show()
+        val intent = Intent(activity, ImageInformation::class.java)
+        intent.putExtra("POS", position)
+        startActivity(intent)
     }
 
 
@@ -78,7 +108,8 @@ class ImageFragment : Fragment() {
             var textID = getResources().getIdentifier(titleStr,"string",packName)
             var resBitmap = BitmapFactory.decodeResource(getResources(), resID)
 
-            image_list.add(ImageItem(resBitmap, getString(textID)))
+            images_list.add(ImageItem(resBitmap, getString(textID)))
+            ImageHolder.setDataList(images_list)
         }
     }
 
@@ -112,7 +143,8 @@ class ImageFragment : Fragment() {
 
                     var titleStr = "new Image "+(totalImgNum+1-initImgNum)
 
-                    image_list.add(ImageItem(bitmap, titleStr))
+                    images_list.add(ImageItem(bitmap, titleStr))
+                    ImageHolder.setDataList(images_list)
 
                     // 리스트에 추가한 후 recycler view에 반영 (맨 뒤에 추가함)
                     ImageRecyclerView.adapter!!.notifyItemInserted(totalImgNum)
