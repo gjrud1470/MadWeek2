@@ -27,6 +27,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
             0 -> {HomeFragment()}
             1 -> {ContactsFragment()}
             2 -> {ImageFragment()}
+            3 -> {PaintFragment()}
             else -> PlaceholderFragment.newInstance(position + 1)
         }
         //return PlaceholderFragment.newInstance(position + 1)
