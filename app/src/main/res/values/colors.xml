@@ -12,4 +12,8 @@
     <color name="call_icon_color">#02BE57</color>
     <color name="gray_border">#DBDBDB</color>
 
+    <color name="red">#FF0000</color>
+    <color name="yellow">#FFE800</color>
+    <color name="green">#00FF08</color>
+    <color name="white">#FFFFFF</color>
 </resources>
