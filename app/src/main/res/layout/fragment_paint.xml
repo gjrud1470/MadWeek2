@@ -18,48 +18,73 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Clear"
+            android:layout_marginLeft="10dp"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="0dp" />
 
         <Button
             android:id="@+id/RedBtn"
-            android:layout_width="65dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:text="Red"
-            android:textColor="#FF0000"
-            android:textSize="12sp"
+            android:layout_marginLeft="35dp"
+            android:backgroundTint="#FF0000"
             app:layout_constraintStart_toEndOf="@+id/ClearBtn"
             tools:layout_editor_absoluteY="0dp" />
 
         <Button
-            android:id="@+id/BlueBtn"
-            android:layout_width="65dp"
+            android:id="@+id/YellowBtn"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="Blue"
-            android:textColor="#0000FF"
-            android:textSize="12sp"
+            android:backgroundTint="#FFFF00"
             app:layout_constraintStart_toEndOf="@+id/RedBtn"
             tools:layout_editor_absoluteY="0dp" />
 
         <Button
             android:id="@+id/GreenBtn"
-            android:layout_width="65dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="Green"
-            android:textColor="#00FF00"
-            android:textSize="12sp"
+            android:backgroundTint="#00FF00"
+            app:layout_constraintStart_toEndOf="@+id/YellowBtn"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <Button
+            android:id="@+id/CyanBtn"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFF"
+            app:layout_constraintStart_toEndOf="@+id/GreenBtn"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <Button
+            android:id="@+id/BlueBtn"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#0000FF"
+            app:layout_constraintStart_toEndOf="@+id/CyanBtn"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <Button
+            android:id="@+id/MagentaBtn"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FF00FF"
             app:layout_constraintStart_toEndOf="@+id/BlueBtn"
             tools:layout_editor_absoluteY="0dp" />
 
         <Button
             android:id="@+id/BlackBtn"
-            android:layout_width="65dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="Black"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/GreenBtn"
+            android:backgroundTint="#000000"
+            app:layout_constraintStart_toEndOf="@+id/MagentaBtn"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <Button
+            android:id="@+id/WhiteBtn"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            app:layout_constraintStart_toEndOf="@+id/BlackBtn"
             tools:layout_editor_absoluteY="0dp" />
 
     </LinearLayout>

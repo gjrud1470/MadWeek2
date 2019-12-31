@@ -1,6 +1,8 @@
 package com.example.myapplication
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -9,6 +11,7 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Half.toFloat
 import android.util.Log
+import android.util.Log.d
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
@@ -37,7 +40,6 @@ class Point() {
 
 var points: ArrayList<Point> = ArrayList<Point>()
 var nowColor: Int = Color.BLACK
-var isfirst: Boolean = true
 
 class canvasView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
 
@@ -81,46 +83,65 @@ class PaintFragment : Fragment() {
         // Inflate the layout for this fragment
         var rootView = inflater.inflate(R.layout.fragment_paint, container, false)
 
-        if(isfirst){
-            //points.add(Point(0f,0f,false,nowColor))
-            isfirst=false
-        }
-
         var myCanvas: canvasView = rootView.findViewById(R.id.canvasView)
-        /*myCanvas.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
-                //myCanvas.invalidate()
-                Log.wtf("??","onTouch")
-                return true
-            }
-        })*/
+
 
         var clearButton : Button = rootView.findViewById(R.id.ClearBtn)
         clearButton.setOnClickListener {
-            Toast.makeText(getContext(), "clear the canvas", Toast.LENGTH_SHORT).show()
-            points.clear()
-            isfirst=true
-            myCanvas.invalidate()
+
+            var builder: AlertDialog.Builder = AlertDialog.Builder(context)
+            builder.setTitle("Will you CLEAR the canvas?")
+            builder.setMessage("You will lose all of the data.")
+            builder.setPositiveButton("YES"){ _, _ ->
+                Toast.makeText(getContext(), "clear success", Toast.LENGTH_SHORT).show()
+                points.clear()
+                myCanvas.invalidate()
+            }
+            builder.setNegativeButton("NO"){ _, _ ->
+                Toast.makeText(getContext(), "clear fail", Toast.LENGTH_SHORT).show()
+            }
+            builder.show()
         }
+
         var redButton : Button = rootView.findViewById(R.id.RedBtn)
         redButton.setOnClickListener {
-            Toast.makeText(getContext(), "change color to red", Toast.LENGTH_SHORT).show()
+            Toast.makeText(getContext(), "change color to Red", Toast.LENGTH_SHORT).show()
             nowColor = Color.RED
         }
-        var blueButton : Button = rootView.findViewById(R.id.BlueBtn)
-        blueButton.setOnClickListener {
-            Toast.makeText(getContext(), "change color to blue", Toast.LENGTH_SHORT).show()
-            nowColor = Color.BLUE
+        var yellowButton : Button = rootView.findViewById(R.id.YellowBtn)
+        yellowButton.setOnClickListener {
+            Toast.makeText(getContext(), "change color to Yellow", Toast.LENGTH_SHORT).show()
+            nowColor = Color.YELLOW
         }
         var greenButton : Button = rootView.findViewById(R.id.GreenBtn)
         greenButton.setOnClickListener {
-            Toast.makeText(getContext(), "change color to green", Toast.LENGTH_SHORT).show()
+            Toast.makeText(getContext(), "change color to Green", Toast.LENGTH_SHORT).show()
             nowColor = Color.GREEN
+        }
+        var cyanButton : Button = rootView.findViewById(R.id.CyanBtn)
+        cyanButton.setOnClickListener {
+            Toast.makeText(getContext(), "change color to Cyan", Toast.LENGTH_SHORT).show()
+            nowColor = Color.CYAN
+        }
+        var blueButton : Button = rootView.findViewById(R.id.BlueBtn)
+        blueButton.setOnClickListener {
+            Toast.makeText(getContext(), "change color to Blue", Toast.LENGTH_SHORT).show()
+            nowColor = Color.BLUE
+        }
+        var magentaButton : Button = rootView.findViewById(R.id.MagentaBtn)
+        magentaButton.setOnClickListener {
+            Toast.makeText(getContext(), "change color to Magenta", Toast.LENGTH_SHORT).show()
+            nowColor = Color.MAGENTA
         }
         var blackButton : Button = rootView.findViewById(R.id.BlackBtn)
         blackButton.setOnClickListener {
-            Toast.makeText(getContext(), "change color to black", Toast.LENGTH_SHORT).show()
+            Toast.makeText(getContext(), "change color to Black", Toast.LENGTH_SHORT).show()
             nowColor = Color.BLACK
+        }
+        var whiteButton : Button = rootView.findViewById(R.id.WhiteBtn)
+        whiteButton.setOnClickListener {
+            Toast.makeText(getContext(), "change color to White", Toast.LENGTH_SHORT).show()
+            nowColor = Color.WHITE
         }
 
 
