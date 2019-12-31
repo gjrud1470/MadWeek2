@@ -31,7 +31,6 @@ class nonSwipeViewPager(context: Context, attributeSet: AttributeSet): ViewPager
         }
         else{
             if(MotionEventCompat.getActionMasked(ev)==MotionEvent.ACTION_MOVE){
-                // ㄴㄴ
             }
             else{
                 if(super.onInterceptTouchEvent(ev)){
