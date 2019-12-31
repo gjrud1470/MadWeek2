@@ -2,39 +2,25 @@ package com.example.myapplication
 
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.provider.ContactsContract
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.loader.app.LoaderManager
-import androidx.cursoradapter.widget.SimpleCursorAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.AdapterView.OnItemClickListener
-import android.widget.CursorAdapter
 import android.widget.FrameLayout
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.ContextCompat.startActivity
-import androidx.loader.content.CursorLoader
 import java.io.InputStream
-import java.io.Serializable
 
 
 class ContactsHolder {
@@ -69,7 +55,7 @@ class ContactsFragment :
     ContactsRecyclerAdapter.OnListItemSelectedInterface {
 
     var contacts_list : ArrayList<ContactModel> = ArrayList()
-    var contact_flag : Boolean = false
+    //var contact_flag : Boolean = false
 
     // Define global mutable variables
     lateinit var ContactsRecyclerView: RecyclerView
@@ -146,7 +132,7 @@ class ContactsFragment :
         }
     }
 
-    private fun SetupContactsView () {
+    fun SetupContactsView () {
         activity?.also {
             viewManager = LinearLayoutManager(requireContext())
             viewAdapter = ContactsRecyclerAdapter(requireContext(), this, contacts_list)
@@ -174,7 +160,7 @@ class ContactsFragment :
     fun getcontact_list() {
         Log.wtf(TAG, "Getting Contacts")
         contacts_list = getContacts(requireContext())
-        contact_flag = true
+        //contact_flag = true
 
         ContactHolder.setDataList(contacts_list)
 
@@ -215,9 +201,9 @@ class ContactsFragment :
                 var id : String = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
                 if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
                     var cursorInfo : Cursor? = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", Array<String>(1){id}, null)
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", Array<String>(1){id}, null)
                     var inputStream : InputStream? = ContactsContract.Contacts.openContactPhotoInputStream(ctx.getContentResolver(),
-                            ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id.toLong()))
+                        ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id.toLong()))
 
                     //var person : Uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id.toLong())
                     //var pURI : Uri = Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY)
@@ -250,6 +236,5 @@ class ContactsFragment :
         }
         return ArrayList(list.sortedWith(compareBy({it.name})))
     }
-
 
 }

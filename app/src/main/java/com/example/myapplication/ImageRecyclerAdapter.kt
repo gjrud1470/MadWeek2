@@ -1,19 +1,13 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import android.content.*
-import android.graphics.Bitmap
 import android.media.ThumbnailUtils
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_image.view.*
 import kotlinx.android.synthetic.main.list_imageitem.view.*
-import java.security.AccessController.getContext
 
 class ImageRecyclerAdapter(private val context: Context, private val listener : OnListItemSelectedInterface, private val items: ArrayList<ImageItem>) :
     RecyclerView.Adapter<ImageRecyclerAdapter.ViewHolder>() {
