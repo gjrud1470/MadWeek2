@@ -103,6 +103,7 @@ class PaintFragment : Fragment() {
             builder.show()
         }
 
+
         var redButton : Button = rootView.findViewById(R.id.RedBtn)
         redButton.setOnClickListener {
             Toast.makeText(getContext(), "change color to Red", Toast.LENGTH_SHORT).show()
@@ -142,6 +143,17 @@ class PaintFragment : Fragment() {
         whiteButton.setOnClickListener {
             Toast.makeText(getContext(), "change color to White", Toast.LENGTH_SHORT).show()
             nowColor = Color.WHITE
+        }
+
+
+        var undoButton : Button = rootView.findViewById(R.id.UndoBtn)
+        undoButton.setOnClickListener {
+            points.
+            Toast.makeText(getContext(), "Undo", Toast.LENGTH_SHORT).show()
+        }
+        var redoButton : Button = rootView.findViewById(R.id.RedoBtn)
+        redoButton.setOnClickListener {
+            Toast.makeText(getContext(), "Redo", Toast.LENGTH_SHORT).show()
         }
 
 
