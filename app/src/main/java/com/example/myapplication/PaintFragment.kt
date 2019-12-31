@@ -104,6 +104,11 @@ class PaintFragment : Fragment() {
             builder.show()
         }
 
+        var captureButton : Button = rootView.findViewById(R.id.CaptureBtn)
+        captureButton.setOnClickListener {
+            Toast.makeText(getContext(), "capture the canvas", Toast.LENGTH_SHORT).show()
+        }
+
 
         var redButton : Button = rootView.findViewById(R.id.RedBtn)
         redButton.setOnClickListener {
@@ -152,11 +157,10 @@ class PaintFragment : Fragment() {
             nowColor = getResources().getColor(R.color.screenBackground)
         }
 
-
         var undoButton : Button = rootView.findViewById(R.id.UndoBtn)
         undoButton.setOnClickListener {
             if(points.size==0){
-                Toast.makeText(getContext(), "Undo Fail (no data)", Toast.LENGTH_SHORT).show()
+                Toast.makeText(getContext(), "undo Fail (no data)", Toast.LENGTH_SHORT).show()
             }
             else {
                 for (i in points.size - 1 downTo 0) {
@@ -168,13 +172,10 @@ class PaintFragment : Fragment() {
                     }
                     myCanvas.invalidate()
                 }
-                Toast.makeText(getContext(), "Undo", Toast.LENGTH_SHORT).show()
+                Toast.makeText(getContext(), "undo", Toast.LENGTH_SHORT).show()
             }
         }
-        var redoButton : Button = rootView.findViewById(R.id.RedoBtn)
-        redoButton.setOnClickListener {
-            Toast.makeText(getContext(), "Redo", Toast.LENGTH_SHORT).show()
-        }
+
 
 
         return rootView
