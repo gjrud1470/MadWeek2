@@ -40,12 +40,13 @@ class Point() {
 
 var points: ArrayList<Point> = ArrayList<Point>()
 var nowColor: Int = Color.BLACK
+var penSize: Float = 10f
 
 class canvasView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
 
     override fun onDraw(canvas: Canvas){
         var p: Paint = Paint()
-        p.setStrokeWidth(15f)
+        p.setStrokeWidth(penSize)
         for(i in 0..points.size-1){
             p.setColor(points.get(i).color)
             if(!points.get(i).chk) continue
@@ -145,11 +146,30 @@ class PaintFragment : Fragment() {
             nowColor = Color.WHITE
         }
 
+        var eraserButton : Button = rootView.findViewById(R.id.EraserBtn)
+        eraserButton.setOnClickListener {
+            Toast.makeText(getContext(), "eraser", Toast.LENGTH_SHORT).show()
+            nowColor = getResources().getColor(R.color.screenBackground)
+        }
+
 
         var undoButton : Button = rootView.findViewById(R.id.UndoBtn)
         undoButton.setOnClickListener {
-            points.
-            Toast.makeText(getContext(), "Undo", Toast.LENGTH_SHORT).show()
+            if(points.size==0){
+                Toast.makeText(getContext(), "Undo Fail (no data)", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                for (i in points.size - 1 downTo 0) {
+                    if (points[i].chk) {
+                        points.removeAt(i)
+                    } else {
+                        points.removeAt(i)
+                        break
+                    }
+                    myCanvas.invalidate()
+                }
+                Toast.makeText(getContext(), "Undo", Toast.LENGTH_SHORT).show()
+            }
         }
         var redoButton : Button = rootView.findViewById(R.id.RedoBtn)
         redoButton.setOnClickListener {

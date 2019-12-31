@@ -15,9 +15,10 @@
 
         <Button
             android:id="@+id/ClearBtn"
-            android:layout_width="70dp"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:text="Clear"
+            android:foreground="@android:drawable/ic_menu_delete"
+            android:backgroundTint="@color/screenBackground"
             android:layout_marginLeft="10dp"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="0dp" />
@@ -26,7 +27,7 @@
             android:id="@+id/RedBtn"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:backgroundTint="#FF0000"
             app:layout_constraintStart_toEndOf="@+id/ClearBtn"
             tools:layout_editor_absoluteY="0dp" />
@@ -87,14 +88,24 @@
             app:layout_constraintStart_toEndOf="@+id/BlackBtn"
             tools:layout_editor_absoluteY="0dp" />
 
+        <Button
+            android:id="@+id/EraserBtn"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:backgroundTint="@color/screenBackground"
+            android:foreground="@drawable/ic_cancel"
+            app:layout_constraintStart_toEndOf="@+id/WhiteBtn"
+            android:layout_marginLeft="5dp"
+            tools:layout_editor_absoluteY="0dp" />
+
 
         <Button
             android:id="@+id/UndoBtn"
             android:layout_width="30dp"
             android:layout_height="40dp"
-            android:backgroundTint="@color/colorTitle"
-            android:foreground="@drawable/ic_undo_white"
-            app:layout_constraintStart_toEndOf="@+id/WhiteBtn"
+            android:backgroundTint="@color/screenBackground"
+            android:foreground="@drawable/ic_undo"
+            app:layout_constraintStart_toEndOf="@+id/EraserBtn"
             android:layout_marginLeft="5dp"
             tools:layout_editor_absoluteY="0dp" />
 
@@ -102,12 +113,10 @@
             android:id="@+id/RedoBtn"
             android:layout_width="30dp"
             android:layout_height="40dp"
-            android:backgroundTint="@color/colorTitle"
-            android:foreground="@drawable/ic_redo_white"
+            android:backgroundTint="@color/screenBackground"
+            android:foreground="@drawable/ic_redo"
             app:layout_constraintStart_toEndOf="@+id/UndoBtn"
             tools:layout_editor_absoluteY="0dp" />
-
-
 
     </LinearLayout>
 
