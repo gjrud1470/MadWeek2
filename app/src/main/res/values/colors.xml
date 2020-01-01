@@ -14,7 +14,9 @@
     <color name="gray_border">#DBDBDB</color>
 
     <color name="red">#FF0000</color>
-    <color name="yellow">#FFE800</color>
-    <color name="green">#00FF08</color>
+    <color name="yellow">#FFCC00</color>
+    <color name="green">#00FF00</color>
+    <color name="skyblue">#00CCFF</color>
+    <color name="blue">#0000FF</color>
     <color name="white">#FFFFFF</color>
 </resources>
