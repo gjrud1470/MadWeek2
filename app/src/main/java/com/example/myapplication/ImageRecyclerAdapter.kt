@@ -9,7 +9,7 @@ import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_imageitem.view.*
 
-class ImageRecyclerAdapter(private val context: Context, private val listener : OnListItemSelectedInterface, private val items: ArrayList<ImageItem>) :
+class ImageRecyclerAdapter(private val context: Context, private val listener : OnListItemSelectedInterface, private var items: ArrayList<ImageItem>) :
     RecyclerView.Adapter<ImageRecyclerAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
@@ -24,6 +24,7 @@ class ImageRecyclerAdapter(private val context: Context, private val listener : 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
+            Log.wtf("???", "view holder init")
             itemView.setOnClickListener { v ->
                 val position = adapterPosition
                 mListener.onItemSelected(v, position)
@@ -32,7 +33,9 @@ class ImageRecyclerAdapter(private val context: Context, private val listener : 
         }
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.wtf("???", "on bind view holder")
         val item = items[position]
 
         var view :View = holder.itemView
@@ -57,6 +60,7 @@ class ImageRecyclerAdapter(private val context: Context, private val listener : 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ImageRecyclerAdapter.ViewHolder {
+        Log.wtf("???", "on create view holder")
         return ViewHolder(LayoutInflater.from(parent.context)
             .inflate(R.layout.list_imageitem, parent, false))
     }

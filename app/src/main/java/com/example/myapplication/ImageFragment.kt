@@ -18,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Gallery
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.fragment.app.FragmentActivity
@@ -31,10 +32,12 @@ class ImagesHolder {
     var image_holder: ArrayList<ImageItem> = ArrayList()
 
     fun getDataList() : ArrayList<ImageItem> {
+        Log.wtf("ImagesHolder","getDataList -> size : ${image_holder.size}")
         return image_holder
     }
 
     fun setDataList(setlist : ArrayList<ImageItem>) {
+        Log.wtf("ImagesHolder","setDataList -> size : ${image_holder.size}")
         image_holder = setlist
     }
 
@@ -45,7 +48,7 @@ class ImagesHolder {
 
 var ImageHolder = ImagesHolder()
 
-val images_list : ArrayList<ImageItem> = ArrayList()
+var images_list : ArrayList<ImageItem> = ArrayList()
 
 var isfirst : Boolean = true
 
@@ -61,8 +64,6 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
 
     lateinit var rootView : View
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,7 +72,6 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
         // 탭을 처음 실행했을 때만 디폴트 이미지 생성(추가)
         if (isfirst) {
             add_init()
-            //totalImgNum = initImgNum
             isfirst = false
         }
 
@@ -101,10 +101,14 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
 
             if(bitmap!=null) {
                 captureImgNum++
+                images_list = ImageHolder.getDataList()
                 images_list.add(ImageItem(bitmap, "Captured Image ${captureImgNum}"))
                 Log.wtf("???", "add ok")
                 ImageHolder.setDataList(images_list)
-                ImageRecyclerView.adapter!!.notifyDataSetChanged()
+
+                refresh()
+
+                Log.wtf("???????????????????","${ImageRecyclerView.adapter!!.itemCount}")
                 Log.wtf("???", "notify ok")
                 totalImgNum++
                 Log.wtf("???","totalImgNum:${totalImgNum}")
@@ -112,6 +116,18 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
         }
 
         return rootView
+    }
+
+    fun refresh(){
+        activity?.also{
+            var viewAdapter = ImageRecyclerAdapter(requireContext(), this, images_list)
+            Log.i("HELLO", "print size ${images_list.size}")
+            ImageRecyclerView = it.findViewById<RecyclerView>(R.id.recyclerView).apply {
+                setHasFixedSize(true)
+                adapter = viewAdapter
+            }
+            activity?.findViewById<LinearLayout>(R.id.fragment_image)?.invalidate()
+        }
     }
 
     override fun onItemSelected(view: View, position: Int){
@@ -171,14 +187,10 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
                 try{
                     var bitmap : Bitmap = MediaStore.Images.Media.getBitmap(getActivity()!!.getContentResolver(), dataUri)
 
-                    var v = rootView.findViewById(R.id.recyclerView!!) as RecyclerView
-                    var siz = v.getWidth()/3
-
-                    //bitmap = Bitmap.createScaledBitmap(bitmap, siz, siz, true)
-
                     newImgNum++
                     var titleStr = "new Image "+ newImgNum
 
+                    images_list = ImageHolder.getDataList()
                     images_list.add(ImageItem(bitmap, titleStr))
                     ImageHolder.setDataList(images_list)
 

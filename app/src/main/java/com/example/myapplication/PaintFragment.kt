@@ -88,6 +88,8 @@ class canvasView(context: Context, attributeSet: AttributeSet) : View(context, a
     }
 }
 
+var captureNum: Int = 0
+
 class PaintFragment : Fragment() {
 
     override fun onCreateView(
@@ -120,8 +122,6 @@ class PaintFragment : Fragment() {
 
 
         // capture canvas
-        var captureNum: Int = 0
-
         var captureButton : Button = rootView.findViewById(R.id.CaptureBtn)
         captureButton.setOnClickListener {
             Toast.makeText(getContext(), "capture the canvas", Toast.LENGTH_SHORT).show()
