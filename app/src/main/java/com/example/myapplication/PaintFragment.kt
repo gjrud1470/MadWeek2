@@ -3,11 +3,15 @@ package com.example.myapplication
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.AttributeSet
 import android.util.Half.toFloat
 import android.util.Log
@@ -17,11 +21,20 @@ import androidx.fragment.app.Fragment
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.annotation.RequiresPermission
+import androidx.fragment.app.FragmentTransaction
 import com.example.myapplication.canvasView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_paint.view.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
+import com.example.myapplication.ImageFragment
 
 
 class Point() {
@@ -75,6 +88,8 @@ class canvasView(context: Context, attributeSet: AttributeSet) : View(context, a
     }
 }
 
+var captureNum: Int = 0
+
 class PaintFragment : Fragment() {
 
     override fun onCreateView(
@@ -87,6 +102,7 @@ class PaintFragment : Fragment() {
         var myCanvas: canvasView = rootView.findViewById(R.id.canvasView)
 
 
+        // reset canvas
         var clearButton : Button = rootView.findViewById(R.id.ClearBtn)
         clearButton.setOnClickListener {
 
@@ -104,12 +120,59 @@ class PaintFragment : Fragment() {
             builder.show()
         }
 
+
+        // capture canvas
         var captureButton : Button = rootView.findViewById(R.id.CaptureBtn)
         captureButton.setOnClickListener {
             Toast.makeText(getContext(), "capture the canvas", Toast.LENGTH_SHORT).show()
+
+            var captureView: View = rootView.findViewById(R.id.canvasView)
+
+            var path: String = Environment.getExternalStorageDirectory().absolutePath + "/PaintCapture";
+            Log.wtf("file path","$path")
+            var file: File = File(path)
+
+            if(!file.exists()){
+                Log.wtf("file path","not exist -> mkdir")
+                file.mkdirs()
+                Log.wtf("file path","not exist -> mkdir")
+            }
+
+            var fos: FileOutputStream? = null
+            try{
+                captureNum++
+                fos = FileOutputStream(path + "/Capture"+ captureNum +".jpeg")
+                viewToBitmap(captureView).compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                getContext()!!.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
+
+                Toast.makeText(getContext(), "save the file", Toast.LENGTH_SHORT).show()
+                fos.flush()
+                fos.close()
+                captureView.destroyDrawingCache()
+
+                var bundle: Bundle = Bundle()
+                bundle.putInt("Capture",captureNum)
+                if(bundle!=null) {
+                    Log.wtf("???", "bundle is not null - paint")
+                    var fragment: ImageFragment = ImageFragment()
+                    fragment.setArguments(bundle)
+                    var fragmentTransaction: FragmentTransaction = getFragmentManager()!!.beginTransaction()
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.replace(R.id.fragment_image, fragment)
+                    fragmentTransaction.commit()
+                }
+
+            }catch(e: FileNotFoundException){
+                e.printStackTrace()
+            }catch(e: IOException){
+                e.printStackTrace()
+            }
+
         }
 
 
+
+        // pen color
         var redButton : Button = rootView.findViewById(R.id.RedBtn)
         redButton.setOnClickListener {
             Toast.makeText(getContext(), "change color to Red", Toast.LENGTH_SHORT).show()
@@ -145,18 +208,15 @@ class PaintFragment : Fragment() {
             Toast.makeText(getContext(), "change color to Black", Toast.LENGTH_SHORT).show()
             nowColor = Color.BLACK
         }
-        var whiteButton : Button = rootView.findViewById(R.id.WhiteBtn)
-        whiteButton.setOnClickListener {
-            Toast.makeText(getContext(), "change color to White", Toast.LENGTH_SHORT).show()
-            nowColor = Color.WHITE
-        }
 
+        // eraser
         var eraserButton : Button = rootView.findViewById(R.id.EraserBtn)
         eraserButton.setOnClickListener {
             Toast.makeText(getContext(), "eraser", Toast.LENGTH_SHORT).show()
-            nowColor = getResources().getColor(R.color.screenBackground)
+            nowColor = getResources().getColor(R.color.paintBackground)
         }
 
+        // undo
         var undoButton : Button = rootView.findViewById(R.id.UndoBtn)
         undoButton.setOnClickListener {
             if(points.size==0){
@@ -176,10 +236,21 @@ class PaintFragment : Fragment() {
             }
         }
 
-
-
         return rootView
     }
+
+
+    fun viewToBitmap(view: View): Bitmap {
+        var bitmap: Bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888)
+        var canvas: Canvas = Canvas(bitmap)
+        view.layout(0,0, view.getWidth(), view.getHeight())
+
+        canvas.drawColor(Color.WHITE)
+        view.draw(canvas)
+        return bitmap
+    }
+
+
 
 
 }

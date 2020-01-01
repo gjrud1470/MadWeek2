@@ -6,41 +6,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PaintFragment">
+    tools:context=".PaintFragment"
+    android:background="@color/paintBackground">
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/RedBtn"
+        app:layout_constraintStart_toEndOf="@+id/RedBtn">
 
         <Button
             android:id="@+id/ClearBtn"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/paintBackground"
             android:foreground="@android:drawable/ic_menu_delete"
-            android:backgroundTint="@color/screenBackground"
-            android:layout_marginLeft="5dp"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/CaptureBtn"
             android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:backgroundTint="@color/screenBackground"
-            android:layout_marginLeft="7dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="@color/paintBackground"
             android:foreground="@android:drawable/ic_menu_camera"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ClearBtn"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/RedBtn"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:backgroundTint="#FF0000"
             app:layout_constraintStart_toEndOf="@+id/CaptureBtn"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/YellowBtn"
@@ -48,7 +52,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFF00"
             app:layout_constraintStart_toEndOf="@+id/RedBtn"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/GreenBtn"
@@ -56,7 +60,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#00FF00"
             app:layout_constraintStart_toEndOf="@+id/YellowBtn"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/CyanBtn"
@@ -64,67 +68,66 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#00FFFF"
             app:layout_constraintStart_toEndOf="@+id/GreenBtn"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/BlueBtn"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#0000FF"
-            app:layout_constraintStart_toEndOf="@+id/CyanBtn"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/CyanBtn"
+            app:layout_constraintStart_toEndOf="@+id/CyanBtn" />
 
         <Button
             android:id="@+id/MagentaBtn"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#FF00FF"
-            app:layout_constraintStart_toEndOf="@+id/BlueBtn"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/BlueBtn"
+            app:layout_constraintStart_toEndOf="@+id/BlueBtn" />
 
         <Button
             android:id="@+id/BlackBtn"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#000000"
-            app:layout_constraintStart_toEndOf="@+id/MagentaBtn"
-            tools:layout_editor_absoluteY="0dp" />
-
-        <Button
-            android:id="@+id/WhiteBtn"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
-            app:layout_constraintStart_toEndOf="@+id/BlackBtn"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/MagentaBtn"
+            app:layout_constraintStart_toEndOf="@+id/MagentaBtn" />
 
         <Button
             android:id="@+id/EraserBtn"
             android:layout_width="30dp"
             android:layout_height="40dp"
-            android:backgroundTint="@color/screenBackground"
+            android:backgroundTint="@color/paintBackground"
             android:foreground="@drawable/ic_cancel"
-            app:layout_constraintStart_toEndOf="@+id/WhiteBtn"
-            android:layout_marginLeft="5dp"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/UndoBtn"
+            app:layout_constraintStart_toEndOf="@+id/BlackBtn" />
 
 
         <Button
             android:id="@+id/UndoBtn"
             android:layout_width="30dp"
-            android:layout_height="40dp"
-            android:backgroundTint="@color/screenBackground"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="@color/paintBackground"
             android:foreground="@drawable/ic_undo"
+            app:layout_constraintBottom_toBottomOf="@+id/BlackBtn"
             app:layout_constraintStart_toEndOf="@+id/EraserBtn"
-            android:layout_marginLeft="7dp"
-            tools:layout_editor_absoluteY="0dp" />
+            app:layout_constraintTop_toTopOf="@+id/BlackBtn" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.example.myapplication.canvasView
+            android:id="@+id/canvasView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/paintBackground"/>
 
     </LinearLayout>
-
-    <com.example.myapplication.canvasView
-        android:id="@+id/canvasView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
 
 </LinearLayout>
