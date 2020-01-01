@@ -12,48 +12,6 @@
         android:layout_height="match_parent"
         android:id="@+id/home_surface" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/home_text1"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="70dp"
-            android:gravity="center"
-            android:text="@string/home_text1"
-            android:textColor="@color/imageBackground"
-            android:textSize="30sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@id/home_text1"
-            android:id="@+id/home_text2"
-            android:layout_marginEnd="30dp"
-            android:gravity="center"
-            android:text="@string/home_text2"
-            android:textColor="@color/imageBackground"
-            android:textSize="40sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@id/home_text2"
-            android:id="@+id/home_text3"
-            android:layout_marginEnd="70dp"
-            android:gravity="center"
-            android:text="@string/home_text3"
-            android:textColor="@color/imageBackground"
-            android:textSize="40sp" />
-
-    </RelativeLayout>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

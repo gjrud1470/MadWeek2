@@ -2,7 +2,6 @@ package com.example.myapplication
 
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -10,34 +9,24 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.Layout
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Gallery
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getDrawable
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.*
-import kotlinx.android.synthetic.main.fragment_image.*
-import java.io.File
-import java.io.FileOutputStream
 
 
 class ImagesHolder {
     var image_holder: ArrayList<ImageItem> = ArrayList()
 
     fun getDataList() : ArrayList<ImageItem> {
-        Log.wtf("ImagesHolder","getDataList -> size : ${image_holder.size}")
         return image_holder
     }
 
     fun setDataList(setlist : ArrayList<ImageItem>) {
-        Log.wtf("ImagesHolder","setDataList -> size : ${image_holder.size}")
         image_holder = setlist
     }
 
@@ -90,28 +79,21 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
 
         // PaintFragment에서 받아오기
         var bundle: Bundle? = getArguments()
-        Log.wtf("???","bundle ok")
         if(bundle != null ) {
-            Log.wtf("???","bundle is not null - image")
             var captureNum: Int = bundle.getInt("Capture")
 
             var path: String = Environment.getExternalStorageDirectory().absolutePath + "/PaintCapture/Capture"+ captureNum +".jpeg"
-            Log.wtf("file path","$path")
             var bitmap: Bitmap? = BitmapFactory.decodeFile(path)
 
             if(bitmap!=null) {
                 captureImgNum++
                 images_list = ImageHolder.getDataList()
                 images_list.add(ImageItem(bitmap, "Captured Image ${captureImgNum}"))
-                Log.wtf("???", "add ok")
                 ImageHolder.setDataList(images_list)
 
                 refresh()
 
-                Log.wtf("???????????????????","${ImageRecyclerView.adapter!!.itemCount}")
-                Log.wtf("???", "notify ok")
                 totalImgNum++
-                Log.wtf("???","totalImgNum:${totalImgNum}")
             }
         }
 
@@ -121,7 +103,6 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
     fun refresh(){
         activity?.also{
             var viewAdapter = ImageRecyclerAdapter(requireContext(), this, images_list)
-            Log.i("HELLO", "print size ${images_list.size}")
             ImageRecyclerView = it.findViewById<RecyclerView>(R.id.recyclerView).apply {
                 setHasFixedSize(true)
                 adapter = viewAdapter
@@ -173,14 +154,11 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.wtf("???","onActivityResult call")
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == Gallery){
-            Log.wtf("???","request gallery")
             if(resultCode == RESULT_OK){
 
-                Log.wtf("???","result ok")
                 var dataUri : Uri? = data?.data
 
                 // 갤러리에서 사진 불러오기

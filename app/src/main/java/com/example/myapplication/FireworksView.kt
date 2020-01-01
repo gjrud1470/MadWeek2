@@ -1,21 +1,13 @@
 package com.example.myapplication
 
-import java.nio.file.Files.size
 import android.view.SurfaceHolder
 import android.view.MotionEvent
 import android.content.Context
 import android.graphics.*
-import android.os.Debug
 import android.util.AttributeSet
-import android.util.Log
 import android.view.SurfaceView
-import java.util.jar.Attributes
 import android.graphics.drawable.BitmapDrawable
-import android.widget.LinearLayout
 import android.graphics.Bitmap
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.view.View
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import kotlin.random.Random
 
 
@@ -177,12 +169,12 @@ class FireworksView(context: Context, attributeSet: AttributeSet) : SurfaceView(
                     canvas = mHolder.lockCanvas()
                     if (canvas != null) {
                         val surface_rect = Rect(0, 0, findViewById<FireworksView>(R.id.home_surface).width, findViewById<FireworksView>(R.id.home_surface).height)
-                        val bitmap : Bitmap = (resources.getDrawable(R.drawable.home_background_cut) as BitmapDrawable).getBitmap()
+                        val bitmap : Bitmap = (resources.getDrawable(R.drawable.home) as BitmapDrawable).getBitmap()
                         canvas!!.drawBitmap(bitmap, null, surface_rect, null)
                         fireworks.doDraw(canvas)
-                    }
 
-                    mHolder.unlockCanvasAndPost(canvas)
+                        mHolder.unlockCanvasAndPost(canvas)
+                    }
                 }
 
                 try {

@@ -2,39 +2,25 @@ package com.example.myapplication
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.AttributeSet
-import android.util.Half.toFloat
-import android.util.Log
-import android.util.Log.d
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.annotation.RequiresPermission
 import androidx.fragment.app.FragmentTransaction
-import com.example.myapplication.canvasView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_paint.view.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.Exception
-import java.util.*
 import kotlin.collections.ArrayList
-import com.example.myapplication.ImageFragment
 
 
 class Point() {
@@ -129,13 +115,10 @@ class PaintFragment : Fragment() {
             var captureView: View = rootView.findViewById(R.id.canvasView)
 
             var path: String = Environment.getExternalStorageDirectory().absolutePath + "/PaintCapture";
-            Log.wtf("file path","$path")
             var file: File = File(path)
 
             if(!file.exists()){
-                Log.wtf("file path","not exist -> mkdir")
                 file.mkdirs()
-                Log.wtf("file path","not exist -> mkdir")
             }
 
             var fos: FileOutputStream? = null
@@ -153,7 +136,6 @@ class PaintFragment : Fragment() {
                 var bundle: Bundle = Bundle()
                 bundle.putInt("Capture",captureNum)
                 if(bundle!=null) {
-                    Log.wtf("???", "bundle is not null - paint")
                     var fragment: ImageFragment = ImageFragment()
                     fragment.setArguments(bundle)
                     var fragmentTransaction: FragmentTransaction = getFragmentManager()!!.beginTransaction()

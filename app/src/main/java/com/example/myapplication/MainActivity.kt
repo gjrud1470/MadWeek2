@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setupPermissions()
 
-        var intent : Intent = Intent(this, SplashActivity::class.java)
+        var intent = Intent(this, SplashActivity::class.java)
         startActivity(intent)
 
         startapp()
