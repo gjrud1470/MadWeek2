@@ -34,6 +34,7 @@ import java.io.IOException
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
+import com.example.myapplication.ImageFragment
 
 
 class Point() {
@@ -126,14 +127,8 @@ class PaintFragment : Fragment() {
             Toast.makeText(getContext(), "capture the canvas", Toast.LENGTH_SHORT).show()
 
             var captureView: View = rootView.findViewById(R.id.canvasView)
-            /*//captureView.setDrawingCacheBackgroundColor(captureView.getDrawingCacheBackgroundColor())
 
-            captureView.buildDrawingCache()
-
-            captureView.setDrawingCacheBackgroundColor(captureView.getDrawingCacheBackgroundColor())
-            var captureBitmap: Bitmap = captureView.getDrawingCache()*/
-
-            var path: String = Environment.getExternalStorageDirectory().absolutePath + "/AnimationCapture2";
+            var path: String = Environment.getExternalStorageDirectory().absolutePath + "/PaintCapture";
             Log.wtf("file path","$path")
             var file: File = File(path)
 
@@ -148,32 +143,30 @@ class PaintFragment : Fragment() {
                 captureNum++
                 fos = FileOutputStream(path + "/Capture"+ captureNum +".jpeg")
                 viewToBitmap(captureView).compress(Bitmap.CompressFormat.JPEG, 100, fos)
-                Log.wtf("file path","1")
                 getContext()!!.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
-                Log.wtf("file path","2")
+
                 Toast.makeText(getContext(), "save the file", Toast.LENGTH_SHORT).show()
                 fos.flush()
                 fos.close()
                 captureView.destroyDrawingCache()
+
+                var bundle: Bundle = Bundle()
+                bundle.putInt("Capture",captureNum)
+                if(bundle!=null) {
+                    Log.wtf("???", "bundle is not null - paint")
+                    var fragment: ImageFragment = ImageFragment()
+                    fragment.setArguments(bundle)
+                    var fragmentTransaction: FragmentTransaction = getFragmentManager()!!.beginTransaction()
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.replace(R.id.fragment_image, fragment)
+                    fragmentTransaction.commit()
+                }
+
             }catch(e: FileNotFoundException){
                 e.printStackTrace()
             }catch(e: IOException){
                 e.printStackTrace()
             }
-
-
-            /*var bundle: Bundle = Bundle()
-            bundle.putParcelable("CapturedImage", captureBitmap)
-            if(bundle!=null) Log.wtf("???","bundle okok")
-
-            var fragment: ImageFragment = ImageFragment()
-            fragment.setArguments(bundle)
-
-            var fragmentTransaction: FragmentTransaction = getFragmentManager()!!.beginTransaction()
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.replace(R.id.fragment_image, fragment)
-            fragmentTransaction.commit()*/
-
 
         }
 

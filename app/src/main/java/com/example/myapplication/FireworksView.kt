@@ -39,7 +39,7 @@ class FireworksView(context: Context, attributeSet: AttributeSet) : SurfaceView(
 
     override fun surfaceCreated(holder: SurfaceHolder) {
         mThread = DrawThread(mHolder)
-        mThread!!.start()
+        //mThread!!.start()
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {

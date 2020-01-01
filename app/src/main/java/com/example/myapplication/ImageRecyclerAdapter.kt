@@ -38,7 +38,7 @@ class ImageRecyclerAdapter(private val context: Context, private val listener : 
         var view :View = holder.itemView
 
         var imageWidth = item.image!!.getWidth()
-        var imageHeight = item.image!!.getHeight()
+        var imageHeight = item.image.getHeight()
 
         view.measure(View.MeasureSpec.makeMeasureSpec(imageWidth, View.MeasureSpec.EXACTLY),
             View.MeasureSpec.makeMeasureSpec(imageHeight, View.MeasureSpec.EXACTLY))
