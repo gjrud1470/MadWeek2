@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import android.view.MotionEvent
 import android.view.View.OnTouchListener
 import android.widget.LinearLayout
+import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : Fragment() {
