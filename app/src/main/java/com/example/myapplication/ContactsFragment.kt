@@ -55,7 +55,6 @@ class ContactsFragment :
     ContactsRecyclerAdapter.OnListItemSelectedInterface {
 
     var contacts_list : ArrayList<ContactModel> = ArrayList()
-    //var contact_flag : Boolean = false
 
     // Define global mutable variables
     lateinit var ContactsRecyclerView: RecyclerView
@@ -160,23 +159,19 @@ class ContactsFragment :
     fun getcontact_list() {
         Log.wtf(TAG, "Getting Contacts")
         contacts_list = getContacts(requireContext())
-        //contact_flag = true
 
         ContactHolder.setDataList(contacts_list)
-
-        Log.wtf(TAG, "Refreshing Layout")
-        //activity?.findViewById<FrameLayout>(R.id.fragment_contacts)?.invalidate()
     }
 
     fun getContacts(ctx : Context) : ArrayList<ContactModel> {
-        var list : ArrayList<ContactModel> = ArrayList()
-        var contentResolver : ContentResolver = ctx.getContentResolver()
-        var cursor : Cursor? = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
-        var dataCursor : Cursor? = contentResolver.query(ContactsContract.Data.CONTENT_URI, arrayOf(ContactsContract.Data.CONTACT_ID, ContactsContract.Data.DATA1),
+        val list : ArrayList<ContactModel> = ArrayList()
+        val contentResolver : ContentResolver = ctx.getContentResolver()
+        val cursor : Cursor? = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
+        val dataCursor : Cursor? = contentResolver.query(ContactsContract.Data.CONTENT_URI, arrayOf(ContactsContract.Data.CONTACT_ID, ContactsContract.Data.DATA1),
             ContactsContract.Data.MIMETYPE + "=?", arrayOf(ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE), null)
-        var groups_cursor : Cursor? = contentResolver.query(ContactsContract.Groups.CONTENT_URI, arrayOf(ContactsContract.Groups._ID, ContactsContract.Groups.TITLE), null, null, null)
-        var hash_group = HashMap<String, String>()
-        var hash_data = HashMap<String, String>()
+        val groups_cursor : Cursor? = contentResolver.query(ContactsContract.Groups.CONTENT_URI, arrayOf(ContactsContract.Groups._ID, ContactsContract.Groups.TITLE), null, null, null)
+        val hash_group = HashMap<String, String>()
+        val hash_data = HashMap<String, String>()
 
         if (groups_cursor != null && groups_cursor.count > 0) {
             while (groups_cursor.moveToNext()) {
@@ -198,11 +193,11 @@ class ContactsFragment :
 
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                var id : String = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+                val id : String = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
                 if (cursor.getInt(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                    var cursorInfo : Cursor? = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                    val cursorInfo : Cursor? = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                         ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", Array<String>(1){id}, null)
-                    var inputStream : InputStream? = ContactsContract.Contacts.openContactPhotoInputStream(ctx.getContentResolver(),
+                    val inputStream : InputStream? = ContactsContract.Contacts.openContactPhotoInputStream(ctx.getContentResolver(),
                         ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id.toLong()))
 
                     //var person : Uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, id.toLong())
@@ -213,16 +208,16 @@ class ContactsFragment :
                         photo = BitmapFactory.decodeStream(inputStream)
                     }
                     if (cursorInfo!!.moveToNext()) {
-                        var info = ContactModel()
+                        val info = ContactModel()
                         info.id = id
                         info.name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                        var raw_number : String = cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        val raw_number : String = cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                         info.mobileNumber = raw_number.substring(0, 3) + "-" + raw_number.substring(3, raw_number.lastIndex-3) + "-" + raw_number.substring(raw_number.lastIndex-3, raw_number.length)
                         info.photo = photo
                         //info.photoURI= pURI
 
                         if (hash_data[id] != null) {
-                            var group_name = hash_data[id]
+                            val group_name = hash_data[id]
                             info.group = group_name
                         }
 

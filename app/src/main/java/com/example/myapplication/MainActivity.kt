@@ -22,36 +22,6 @@ import androidx.core.view.MotionEventCompat
 import android.util.Log
 
 
-class nonSwipeViewPager(context: Context, attributeSet: AttributeSet): ViewPager(context, attributeSet) {
-    var enable: Boolean = false
-
-    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
-        if(enable){
-            return super.onInterceptTouchEvent(ev)
-        }
-        else{
-            if(MotionEventCompat.getActionMasked(ev)==MotionEvent.ACTION_MOVE){
-            }
-            else{
-                if(super.onInterceptTouchEvent(ev)){
-                    super.onTouchEvent(ev)
-                }
-            }
-            return false
-        }
-    }
-
-    override fun onTouchEvent(ev: MotionEvent): Boolean{
-        if(enable){
-            return super.onTouchEvent(ev)
-        }
-        else{
-            return MotionEventCompat.getActionMasked(ev) != MotionEvent.ACTION_MOVE && super.onTouchEvent(ev)
-        }
-    }
-}
-
-
 class MainActivity : AppCompatActivity() {
 
     val DEBUG_TAG : String = "MainActivity"
@@ -125,4 +95,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+}
+
+class nonSwipeViewPager(context: Context, attributeSet: AttributeSet): ViewPager(context, attributeSet) {
+    var enable: Boolean = false
+
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        if(enable){
+            return super.onInterceptTouchEvent(ev)
+        }
+        else{
+            if(MotionEventCompat.getActionMasked(ev)==MotionEvent.ACTION_MOVE){
+            }
+            else{
+                if(super.onInterceptTouchEvent(ev)){
+                    super.onTouchEvent(ev)
+                }
+            }
+            return false
+        }
+    }
+
+    override fun onTouchEvent(ev: MotionEvent): Boolean{
+        if(enable){
+            return super.onTouchEvent(ev)
+        }
+        else{
+            return MotionEventCompat.getActionMasked(ev) != MotionEvent.ACTION_MOVE && super.onTouchEvent(ev)
+        }
+    }
 }

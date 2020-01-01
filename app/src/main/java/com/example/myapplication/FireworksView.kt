@@ -62,22 +62,6 @@ class FireworksView(context: Context, attributeSet: AttributeSet) : SurfaceView(
         }
     }
 
-    fun pause_mThread() {
-        mThread!!.bExit = true
-        while (true) {
-            try {
-                mThread!!.join() // Thread 종료 기다리기
-                break
-            } catch (e: Exception) {
-            }
-        }
-    }
-
-    fun restart_mTHread() {
-        mThread!!.bExit = false
-        mThread!!.start()
-    }
-
     override fun onTouchEvent(event: MotionEvent): Boolean {
         touchThread!!.setEvent(event.action, event.x, event.y)
         when (event.action) {
