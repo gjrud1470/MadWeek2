@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupPermissions(){
         val permissions = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.CALL_PHONE
         )
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun makeRequest() {
         ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE),
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE),
             PERM_REQUEST_CODE)
     }
 

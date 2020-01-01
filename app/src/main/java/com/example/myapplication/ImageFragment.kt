@@ -80,6 +80,21 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
         ImageRecyclerView = rootView.findViewById(R.id.recyclerView!!)as RecyclerView
         ImageRecyclerView.adapter = ImageRecyclerAdapter(requireContext(), this, images_list)
 
+
+        /*// PaintFragment에서 받아오기
+        var bundle: Bundle? = getArguments()
+        Log.wtf("???","bundle ok")
+        if(bundle != null ) {
+            Log.wtf("???","bundle is not null")
+            var bitmap: Bitmap? = bundle!!.getParcelable("CapturedImage")
+            images_list.add(ImageItem(bitmap, "Captured Image"))
+            Log.wtf("???","add ok")
+            ImageHolder.setDataList(images_list)
+            ImageRecyclerView.adapter!!.notifyItemInserted(totalImgNum)
+            Log.wtf("???","notify ok")
+            totalImgNum++
+        }*/
+
         return rootView
     }
 
@@ -126,10 +141,14 @@ class ImageFragment : Fragment(), ImageRecyclerAdapter.OnListItemSelectedInterfa
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.wtf("???","onActivityResult call")
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == Gallery){
+            Log.wtf("???","request gallery")
             if(resultCode == RESULT_OK){
+
+                Log.wtf("???","result ok")
                 var dataUri : Uri? = data?.data
 
                 // 갤러리에서 사진 불러오기
