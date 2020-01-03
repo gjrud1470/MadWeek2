@@ -1,8 +1,9 @@
-package com.example.myapplication
+package com.example.MadWeek2
 
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import com.example.MadWeek2.R
 
 class SplashActivity : AppCompatActivity(){
 

@@ -16,29 +16,5 @@
     <string name="text_korean_number">휴대전화</string>
     <string name="text_korean_group">그룹</string>
 
-    <!-- IMAGES tab text -->
-    <string name="title01">Pink Image</string>
-    <string name="title02">Yellow Image</string>
-    <string name="title03">Purple Image</string>
-    <string name="title04">Orange Image</string>
-    <string name="title05">Green Image</string>
-    <string name="title06">Hiphop Image</string>
-    <string name="title07">Excited Image</string>
-    <string name="title08">Flying Image</string>
-    <string name="title09">Shy Image</string>
-    <string name="title10">EE-Gwa Image</string>
-    <string name="title11">w\'ㅁ\'w Image</string>
-    <string name="title12">ㅇ_＜★ Image</string>
-    <string name="title13">Heart Image</string>
-    <string name="title14">Crying Image</string>
-    <string name="title15">Beer Image</string>
-    <string name="title16">Couple Image</string>
-    <string name="title17">Baby Image</string>
-    <string name="title18">Cuty Image</string>
-    <string name="title19">Resistance Image</string>
-    <string name="title20">Chemistry Image</string>
-
-    <!-- PAINT tab text -->
-
 
 </resources>

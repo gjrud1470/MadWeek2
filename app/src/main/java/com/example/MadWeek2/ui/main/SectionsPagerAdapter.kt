@@ -1,10 +1,13 @@
-package com.example.myapplication.ui.main
+package com.example.MadWeek2.ui.main
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.myapplication.*
+import com.example.MadWeek2.ContactsFragment
+import com.example.MadWeek2.HomeFragment
+import com.example.MadWeek2.PhotoFragment
+import com.example.MadWeek2.*
 
 private val TAB_TITLES = arrayOf(
         R.string.tab_text_1,
@@ -24,10 +27,15 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
         return when (position) {
-            0 -> {HomeFragment()}
-            1 -> {ContactsFragment()}
-            2 -> {ImageFragment()}
-            3 -> {PaintFragment()}
+            0 -> {
+                HomeFragment()
+            }
+            1 -> {
+                ContactsFragment()
+            }
+            2 -> {
+                PhotoFragment()
+            }
             else -> PlaceholderFragment.newInstance(position + 1)
         }
     }
@@ -38,6 +46,6 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
 
     override fun getCount(): Int {
         // Show 4 total pages.
-        return 4
+        return 3
     }
 }

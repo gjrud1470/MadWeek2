@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.MadWeek2
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import androidx.core.content.ContextCompat
+import com.example.MadWeek2.R
 import com.mikhaellopez.circularimageview.CircularImageView
 
 
@@ -74,7 +75,9 @@ class ContactsRecyclerAdapter(private val context : Context,
             ImageViewCompat.setImageTintList(holder.itemView.thumbnail1, null)
         }
         else {
-            val bitmapdrawable : BitmapDrawable = ContextCompat.getDrawable(context, R.drawable.default_profile) as BitmapDrawable
+            val bitmapdrawable : BitmapDrawable = ContextCompat.getDrawable(context,
+                R.drawable.default_profile
+            ) as BitmapDrawable
             val bitmappic : Bitmap = bitmapdrawable.bitmap
             myDataset[position].photo = tintImage(bitmappic, randomcolor)
             holder.itemView.thumbnail1.setImageBitmap(myDataset[position].photo)

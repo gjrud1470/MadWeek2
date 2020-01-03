@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_home"
-    tools:context=".HomeFragment">
+    tools:context="com.example.MadWeek2.HomeFragment">
 
-    <com.example.myapplication.FireworksView
+    <com.example.MadWeek2.FireworksView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/home_surface" />

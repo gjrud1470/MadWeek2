@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.MadWeek2
 
 import android.view.SurfaceHolder
 import android.view.MotionEvent
@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.SurfaceView
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.Bitmap
+import com.example.MadWeek2.R
 import kotlin.random.Random
 
 
@@ -121,7 +122,7 @@ class FireworksView(context: Context, attributeSet: AttributeSet) : SurfaceView(
             }
 
             try {
-                sleep(FireworksView.DELAY)
+                sleep(DELAY)
             } catch (e: Exception) {
             }
         }
@@ -152,7 +153,9 @@ class FireworksView(context: Context, attributeSet: AttributeSet) : SurfaceView(
                 synchronized(mHolder) {
                     canvas = mHolder.lockCanvas()
                     if (canvas != null) {
-                        val surface_rect = Rect(0, 0, findViewById<FireworksView>(R.id.home_surface).width, findViewById<FireworksView>(R.id.home_surface).height)
+                        val surface_rect = Rect(0, 0, findViewById<FireworksView>(
+                            R.id.home_surface
+                        ).width, findViewById<FireworksView>(R.id.home_surface).height)
                         val bitmap : Bitmap = (resources.getDrawable(R.drawable.home) as BitmapDrawable).getBitmap()
                         canvas!!.drawBitmap(bitmap, null, surface_rect, null)
                         fireworks.doDraw(canvas)
@@ -162,7 +165,7 @@ class FireworksView(context: Context, attributeSet: AttributeSet) : SurfaceView(
                 }
 
                 try {
-                    sleep(FireworksView.DELAY)
+                    sleep(DELAY)
                 } catch (e: Exception) {
                 }
             }

@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.MadWeek2
 
 import android.Manifest
 import android.content.Intent

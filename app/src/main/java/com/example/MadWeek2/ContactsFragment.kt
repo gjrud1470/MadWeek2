@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.MadWeek2
 
 
 import android.Manifest
@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.content.ContextCompat.startActivity
 import java.io.InputStream
 
 
@@ -134,7 +133,8 @@ class ContactsFragment :
     fun SetupContactsView () {
         activity?.also {
             viewManager = LinearLayoutManager(requireContext())
-            viewAdapter = ContactsRecyclerAdapter(requireContext(), this, contacts_list)
+            viewAdapter =
+                ContactsRecyclerAdapter(requireContext(), this, contacts_list)
             Log.i("HELLO", "print size ${contacts_list.size}")
             ContactsRecyclerView = it.findViewById<RecyclerView>(R.id.my_recycler_view).apply {
                 setHasFixedSize(true)

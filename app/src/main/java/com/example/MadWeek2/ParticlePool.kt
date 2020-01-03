@@ -1,11 +1,11 @@
-package com.example.myapplication
+package com.example.MadWeek2
 
 import android.graphics.Canvas
 import android.util.Log
 
 class ParticlePool {
     private val POOL_SIZE = 1000
-    private var particles_ = Array<Particle>(POOL_SIZE, {i -> Particle()})
+    private var particles_ = Array<Particle>(POOL_SIZE, { i -> Particle() })
     private var first_available : Int? = 0
 
     init {

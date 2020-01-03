@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_contacts"
-    tools:context=".ContactsFragment">
+    tools:context="com.example.MadWeek2.ContactsFragment">
 
     <!-- A RecyclerView with some commonly used attributes -->
     <androidx.recyclerview.widget.RecyclerView

@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.MadWeek2
 
 import android.Manifest
 import android.app.PendingIntent.getActivity
@@ -10,7 +10,7 @@ import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.myapplication.ui.main.SectionsPagerAdapter
+import com.example.MadWeek2.ui.main.SectionsPagerAdapter
 import android.content.Intent
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
@@ -20,6 +20,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.core.view.MotionEventCompat
 import android.util.Log
+import com.example.MadWeek2.R
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,7 +39,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startapp() {
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        val sectionsPagerAdapter =
+            SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: nonSwipeViewPager = findViewById(R.id.view_pager)
         viewPager.offscreenPageLimit = 4
         viewPager.adapter = sectionsPagerAdapter

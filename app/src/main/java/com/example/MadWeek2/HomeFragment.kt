@@ -1,9 +1,10 @@
-package com.example.myapplication
+package com.example.MadWeek2
 
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import com.example.MadWeek2.R
 
 
 class HomeFragment : Fragment() {
