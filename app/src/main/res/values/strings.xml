@@ -16,5 +16,11 @@
     <string name="text_korean_number">휴대전화</string>
     <string name="text_korean_group">그룹</string>
 
+    <!-- LOGIN -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="register">Register</string>
+
 
 </resources>
