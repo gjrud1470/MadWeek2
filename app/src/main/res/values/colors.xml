@@ -29,4 +29,6 @@
     <color name="colorSignin">#A6FFF8</color>
     <color name="colorRegister">#003BC4</color>
 
+    <color name="text_button">#FF4800</color>
+
 </resources>

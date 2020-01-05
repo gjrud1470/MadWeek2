@@ -2,6 +2,7 @@ package com.example.MadWeek2
 
 
 import android.Manifest
+import android.app.ActivityOptions
 import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -19,6 +20,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.afollestad.materialdialogs.MaterialDialog
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import java.io.InputStream
 
 
@@ -36,6 +42,10 @@ class ContactsHolder {
     fun getDataById(position: Int) : ContactModel {
         return contact_holder[position]
     }
+
+    fun sortData() {
+        contact_holder = ArrayList(contact_holder.sortedWith(compareBy({it.name})))
+    }
 }
 
 var ContactHolder = ContactsHolder()
@@ -51,9 +61,17 @@ class ContactModel{
 
 class ContactsFragment :
     Fragment(),
-    ContactsRecyclerAdapter.OnListItemSelectedInterface {
+    ContactsRecyclerAdapter.OnListItemSelectedInterface,
+    SwipeRefreshLayout.OnRefreshListener {
 
     var contacts_list : ArrayList<ContactModel> = ArrayList()
+    var first_start = true
+
+    val REQUEST_NEW_CONTACT = 1
+    val REQUEST_SHOW_INFO = 2
+
+    val RESULT_SAVED = 1
+    val RESULT_DELETED = 2
 
     // Define global mutable variables
     lateinit var ContactsRecyclerView: RecyclerView
@@ -62,6 +80,81 @@ class ContactsFragment :
 
     private val TAG = "ContactsFragment"
     private val PERM_REQUEST_CODE = 100
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val rootView = inflater.inflate(R.layout.fragment_contacts, container, false)
+
+        val swipeRefreshLayout = rootView.findViewById<SwipeRefreshLayout>(R.id.swipe_contacts)
+        swipeRefreshLayout.setOnRefreshListener (this)
+
+        val fab: FloatingActionButton = rootView!!.findViewById(R.id.add_contacts)
+
+        fab.setOnClickListener { view ->
+            var intent = Intent(view.context, Contact_edit::class.java)
+            startActivityForResult(intent, REQUEST_NEW_CONTACT)
+        }
+        return rootView
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (setupPermissions() && first_start) {
+            SetupContactsView()
+            first_start = false
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (requestCode) {
+            REQUEST_NEW_CONTACT -> {
+                if (resultCode == RESULT_SAVED)
+                    SetupContactsView()
+            }
+            REQUEST_SHOW_INFO -> {
+                when (resultCode) {
+                    RESULT_SAVED -> SetupContactsView()
+                    RESULT_DELETED -> SetupContactsView()
+                }
+            }
+        }
+    }
+
+    override fun onRefresh() {
+        SetupContactsView()
+        view!!.findViewById<SwipeRefreshLayout>(R.id.swipe_contacts).isRefreshing = false
+    }
+
+    fun SetupContactsView () {
+        activity?.also {
+            viewManager = LinearLayoutManager(requireContext())
+            viewAdapter =
+                ContactsRecyclerAdapter(requireContext(), this, ContactHolder.getDataList())
+            Log.i("HELLO", "print size ${ContactHolder.getDataList().size}")
+            ContactsRecyclerView = it.findViewById<RecyclerView>(R.id.my_recycler_view).apply {
+                setHasFixedSize(true)
+                layoutManager = viewManager
+                adapter = viewAdapter
+            }
+            activity?.findViewById<SwipeRefreshLayout>(R.id.swipe_contacts)?.invalidate()
+        }
+    }
+
+    override fun onItemSelected(view: View, position: Int) {
+        val intent = Intent (activity, ContactInformation::class.java)
+        intent.putExtra("POS", position)
+        startActivityForResult(intent, REQUEST_SHOW_INFO)
+    }
+
+    override fun callOnClick(view: View, position: Int) {
+        val intent = Intent (Intent.ACTION_CALL, Uri.fromParts("tel", ContactHolder.getDataById(position).mobileNumber, null))
+        startActivity(intent)
+    }
 
     fun hasPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
         checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
@@ -99,7 +192,6 @@ class ContactsFragment :
                     // contacts-related task you need to do.
                     Log.i(TAG, "Permission has been granted by user")
                     getcontact_list()
-                    SetupContactsView()
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -112,48 +204,6 @@ class ContactsFragment :
                 // Ignore all other requests.
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contacts, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        if (setupPermissions()) {
-            SetupContactsView()
-        }
-    }
-
-    fun SetupContactsView () {
-        activity?.also {
-            viewManager = LinearLayoutManager(requireContext())
-            viewAdapter =
-                ContactsRecyclerAdapter(requireContext(), this, contacts_list)
-            Log.i("HELLO", "print size ${contacts_list.size}")
-            ContactsRecyclerView = it.findViewById<RecyclerView>(R.id.my_recycler_view).apply {
-                setHasFixedSize(true)
-                layoutManager = viewManager
-                adapter = viewAdapter
-            }
-            activity?.findViewById<FrameLayout>(R.id.fragment_contacts)?.invalidate()
-        }
-    }
-
-    override fun onItemSelected(view: View, position: Int) {
-        val intent = Intent (activity, ContactInformation::class.java)
-        intent.putExtra("POS", position)
-        startActivity(intent)
-    }
-
-    override fun callOnClick(view: View, position: Int) {
-        val intent = Intent (Intent.ACTION_CALL, Uri.fromParts("tel", ContactHolder.getDataById(position).mobileNumber, null))
-        startActivity(intent)
     }
 
     fun getcontact_list() {
