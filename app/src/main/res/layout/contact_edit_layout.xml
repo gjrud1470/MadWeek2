@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/contact_infoBackground"
+    tools:context="com.example.MadWeek2.ContactInformation">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contact_edit_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/contact_infoBackground">
+
+            <RelativeLayout
+                android:id="@+id/info_constraint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:elevation="10dp">
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/edit_info_photo"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/default_profile" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/info_buffer"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent" >
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/info_nameholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/imageBackground"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/info_buffer"
+                android:elevation="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edit_info_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="40dp"
+                        android:textSize="22sp"
+                        android:singleLine="true"
+                        android:inputType="textPersonName"
+                        android:hint="이름"
+                        android:layout_margin="10dp"
+                        app:fontFamily="sans-serif"
+                        app:met_iconLeft="@drawable/ic_user"
+                        app:met_primaryColor="@color/text_gray"
+                        app:met_baseColor="@color/text_gray"
+                        app:met_textColorHint="@color/text_gray"
+                        app:met_iconPadding="0dp" />
+
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edit_info_phonenumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:inputType="phone"
+                        android:hint="@string/text_korean_number"
+                        android:layout_margin="10dp"
+                        app:fontFamily="sans-serif"
+                        app:met_iconLeft="@drawable/ic_phone"
+                        app:met_primaryColor="@color/text_gray"
+                        app:met_baseColor="@color/text_gray"
+                        app:met_textColorHint="@color/text_gray"
+                        app:met_iconPadding="0dp"/>
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/edit_info_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:hint="@string/text_korean_group"
+                        android:layout_margin="10dp"
+                        app:fontFamily="sans-serif"
+                        app:met_iconLeft="@drawable/ic_group"
+                        app:met_primaryColor="@color/text_gray"
+                        app:met_baseColor="@color/text_gray"
+                        app:met_textColorHint="@color/text_gray"
+                        app:met_iconPadding="0dp"/>
+
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/info_nameholder">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cancel_save_contact"
+                    android:textSize="22sp"
+                    android:layout_margin="10dp"
+                    app:fontFamily="sans-serif"
+                    android:text="취소"
+                    android:textColor="@color/text_button" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/save_contact"
+                    android:textSize="22sp"
+                    android:layout_margin="10dp"
+                    app:fontFamily="sans-serif"
+                    android:text="저장"
+                    android:textColor="@color/text_button"/>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

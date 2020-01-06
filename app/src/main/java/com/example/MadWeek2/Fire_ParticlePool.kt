@@ -3,9 +3,9 @@ package com.example.MadWeek2
 import android.graphics.Canvas
 import android.util.Log
 
-class ParticlePool {
+class Fire_ParticlePool {
     private val POOL_SIZE = 1000
-    private var particles_ = Array<Particle>(POOL_SIZE, { i -> Particle() })
+    private var particles_ = Array<Fire_Particle>(POOL_SIZE, { i -> Fire_Particle() })
     private var first_available : Int? = 0
 
     init {
@@ -17,7 +17,7 @@ class ParticlePool {
 
     fun create (x:Double, y:Double, xVel:Double, yVel:Double, lifetime:Int, color:Int, trail:Boolean) {
         if (first_available != null) {
-            val particle: Particle = particles_[first_available!!]
+            val particle: Fire_Particle = particles_[first_available!!]
             particle.init(x, y, xVel, yVel, lifetime, color, trail)
             first_available = particle.getNext()
         }

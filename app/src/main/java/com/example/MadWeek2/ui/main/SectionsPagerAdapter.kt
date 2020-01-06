@@ -36,6 +36,9 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
             2 -> {
                 PhotoFragment()
             }
+            3 -> {
+                GameFragment()
+            }
             else -> PlaceholderFragment.newInstance(position + 1)
         }
     }
@@ -46,6 +49,6 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
 
     override fun getCount(): Int {
         // Show 4 total pages.
-        return 3
+        return 4
     }
 }

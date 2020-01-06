@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/duck_pond"
+    tools:context="com.example.MadWeek2.LoginActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="@drawable/gradient_bg" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/logo" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="160dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.6"
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@android:color/black"
+                app:cardCornerRadius="10dp"
+                android:id="@+id/card_view"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp">
+
+                <EditText
+                     android:id="@+id/username"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:backgroundTint="@color/colorWhite"
+                     android:fontFamily="sans-serif-light"
+                     android:hint="@string/username"
+                     android:inputType="textEmailAddress"
+                     android:textColor="@color/colorWhite"
+                     android:textColorHint="@color/colorWhite"
+                     android:textSize="17sp"
+                     android:layout_margin="10dp"/>
+
+                 <EditText
+                     android:id="@+id/passwordinput"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/username"
+                     android:layout_marginTop="50dp"
+                     android:layout_marginRight="10dp"
+                     android:layout_marginLeft="10dp"
+                     android:layout_marginBottom="10dp"
+                     android:backgroundTint="@color/colorWhite"
+                     android:fontFamily="sans-serif-light"
+                     android:hint="@string/password"
+                     android:inputType="textPassword"
+                     android:textColor="@color/colorWhite"
+                     android:textColorHint="@color/colorWhite"
+                     android:textSize="17sp" />
+             </androidx.cardview.widget.CardView>
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <Button
+                android:id="@+id/btSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/btSignUp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/button_signin"
+                android:text="@string/sign_in"
+                android:textColor="@color/colorPrimary" />
+
+            <Button
+                android:id="@+id/btSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/button_register"
+                android:text="@string/register"
+                android:textColor="@color/colorWhite" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

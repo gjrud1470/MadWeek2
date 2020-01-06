@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+        <!--  Name Label -->
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/input_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:inputType="textCapWords"
+        android:hint="Name"
+        app:met_iconRight="@drawable/ic_user"
+        app:met_primaryColor="@color/text_gray"
+        app:met_baseColor="@color/text_gray"
+        app:met_textColorHint="@color/text_gray"
+        app:met_iconPadding="0dp"/>
+
+
+        <!-- Email Label -->
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/input_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:inputType="textEmailAddress"
+        android:hint="Email"
+        app:met_iconRight="@drawable/ic_email"
+        app:met_primaryColor="@color/text_gray"
+        app:met_baseColor="@color/text_gray"
+        app:met_textColorHint="@color/text_gray"
+        app:met_iconPadding="0dp"/>
+
+
+        <!-- Password Label -->
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/input_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:inputType="textPassword"
+        android:hint="Password"
+        app:met_iconRight="@drawable/ic_lock"
+        app:met_primaryColor="@color/text_gray"
+        app:met_baseColor="@color/text_gray"
+        app:met_textColorHint="@color/text_gray"
+        app:met_iconPadding="0dp"/>
+
+</LinearLayout>
