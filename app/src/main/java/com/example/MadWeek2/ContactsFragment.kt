@@ -16,10 +16,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.afollestad.materialdialogs.MaterialDialog
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
@@ -81,6 +83,12 @@ class ContactsFragment :
     private val TAG = "ContactsFragment"
     private val PERM_REQUEST_CODE = 100
 
+    var upload : FloatingActionButton? = null
+    var download : FloatingActionButton? = null
+    var addcontact : FloatingActionButton? = null
+    var fab_menu : FloatingActionButton? = null
+    var isMenuOpen = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,12 +99,19 @@ class ContactsFragment :
         val swipeRefreshLayout = rootView.findViewById<SwipeRefreshLayout>(R.id.swipe_contacts)
         swipeRefreshLayout.setOnRefreshListener (this)
 
-        val fab: FloatingActionButton = rootView!!.findViewById(R.id.add_contacts)
+        fab_menu = rootView!!.findViewById(R.id.fab_menu)
+        upload = rootView.findViewById(R.id.fab_upload)
+        download = rootView.findViewById(R.id.fab_download)
+        addcontact = rootView.findViewById(R.id.fab_add_contacts)
 
-        fab.setOnClickListener { view ->
+        fab_menu!!.setOnClickListener { view ->
+            menuOpen()
+        }
+        addcontact!!.setOnClickListener { view ->
             var intent = Intent(view.context, Contact_edit::class.java)
             startActivityForResult(intent, REQUEST_NEW_CONTACT)
         }
+
         return rootView
     }
 
@@ -125,6 +140,21 @@ class ContactsFragment :
         }
     }
 
+    private fun menuOpen() {
+        if (!isMenuOpen) {
+            upload!!.animate().translationY(-resources.getDimension(R.dimen.upload))
+            download!!.animate().translationY(-resources.getDimension(R.dimen.download))
+            addcontact!!.animate().translationY(-resources.getDimension(R.dimen.add_contact))
+            isMenuOpen = true
+        }
+        else {
+            upload!!.animate().translationY(0.toFloat())
+            download!!.animate().translationY(0.toFloat())
+            addcontact!!.animate().translationY(0.toFloat())
+            isMenuOpen = false
+        }
+    }
+
     override fun onRefresh() {
         SetupContactsView()
         view!!.findViewById<SwipeRefreshLayout>(R.id.swipe_contacts).isRefreshing = false
@@ -135,7 +165,7 @@ class ContactsFragment :
             viewManager = LinearLayoutManager(requireContext())
             viewAdapter =
                 ContactsRecyclerAdapter(requireContext(), this, ContactHolder.getDataList())
-            Log.i("HELLO", "print size ${ContactHolder.getDataList().size}")
+            Log.i("SetupContactsView", "print size ${ContactHolder.getDataList().size}")
             ContactsRecyclerView = it.findViewById<RecyclerView>(R.id.my_recycler_view).apply {
                 setHasFixedSize(true)
                 layoutManager = viewManager

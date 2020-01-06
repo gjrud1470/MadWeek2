@@ -5,8 +5,13 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.SurfaceView
+import android.view.View
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import android.widget.TextView
 import com.example.MadWeek2.R
+import io.github.controlwear.virtual.joystick.android.JoystickView
+import kotlinx.android.synthetic.main.activity_game.view.*
 
 class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(context, attributeSet), SurfaceHolder.Callback {
 
@@ -44,6 +49,10 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
     }
 
     private fun InitGame() {
+
+        //joystickView_left.visibility = View.VISIBLE
+        //joystickView_right.visibility = View.VISIBLE
+
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
@@ -59,6 +68,9 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
         imgBack = Bitmap.createScaledBitmap(imgBack!!, Width_d * 2, Height_d * 2, true)
 
         mThread!!.start()
+
+        val joystickleft = findViewById<JoystickView>(R.id.joystickView_left)
+        joystickleft.visibility = View.VISIBLE
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {

@@ -22,13 +22,20 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.MadWeek2.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class PhotoFragment extends Fragment {
+
+    private FloatingActionButton upload;
+    private FloatingActionButton download;
+    private FloatingActionButton fab_menu;
+    private Boolean isMenuOpen = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +47,7 @@ public class PhotoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
 
-        GridView gridView = (GridView) view.findViewById(R.id.gridViewImages);
+        final GridView gridView = (GridView) view.findViewById(R.id.gridViewImages);
         final ImageGridAdapter imageGridAdapter = new ImageGridAdapter(getActivity());
         gridView.setAdapter(imageGridAdapter);
 
@@ -49,7 +56,42 @@ public class PhotoFragment extends Fragment {
                 imageGridAdapter.callImageViewer(position);
             }
         });
+
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_photos);
+        swipeRefreshLayout.setOnRefreshListener (new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh () {
+                    //imageGridAdapter.notifyDataSetChanged();
+                    gridView.invalidate();
+                    swipeRefreshLayout.setRefreshing(false);
+        }
+        });
+
+        fab_menu = view.findViewById(R.id.fab_menu);
+        upload = view.findViewById(R.id.fab_upload);
+        download = view.findViewById(R.id.fab_download);
+
+        fab_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                menuOpen();
+            }
+        });
+
         return view;
+    }
+
+    private void menuOpen() {
+        if (!isMenuOpen) {
+            upload.animate().translationY(-getResources().getDimension(R.dimen.upload));
+            download.animate().translationY(-getResources().getDimension(R.dimen.download));
+            isMenuOpen = true;
+        }
+        else {
+            upload.animate().translationY(0);
+            download.animate().translationY(0);
+            isMenuOpen = false;
+        }
     }
 
     public class ImageGridAdapter extends BaseAdapter {
