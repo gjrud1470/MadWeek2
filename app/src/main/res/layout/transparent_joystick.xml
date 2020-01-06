@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.github.controlwear.virtual.joystick.android.JoystickView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/joystickView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_margin="22dp"
+    android:background="@color/quarter_transparent_gray"
+    custom:JV_buttonImage="@color/half_transparent_gray"
+    custom:JV_fixedCenter="false">
+
+</io.github.controlwear.virtual.joystick.android.JoystickView>

@@ -30,5 +30,16 @@
     <color name="colorRegister">#003BC4</color>
 
     <color name="text_button">#FF4800</color>
+    <color name="play_button">#303030</color>
+    <color name="play_text">#FFC107</color>
+
+    <color name="black_overlay">#66000000</color>
+
+    <color name="quarter_transparent_gray">#40797979</color>
+    <color name="half_transparent_gray">#80797979</color>
+    <color name="joystick_border">#80BDBDBD</color>
+
+    <color name="bullet">#000000</color>
+    <color name="timmy">#5F1111</color>
 
 </resources>

@@ -50,4 +50,7 @@ dependencies {
     //Material Edit Text
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
     implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
+
+    //Virtual Joystick
+    implementation 'io.github.controlwear:virtualjoystick:1.10.1'
 }

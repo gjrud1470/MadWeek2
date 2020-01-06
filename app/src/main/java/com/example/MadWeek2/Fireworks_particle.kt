@@ -6,17 +6,13 @@ import android.graphics.Matrix
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.blue
-import androidx.core.graphics.green
-import androidx.core.graphics.red
-import androidx.core.graphics.rotationMatrix
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 
 
 class Firework_particle {
     private val random = Random
-    private val particle_pool = ParticlePool()
+    private val particle_pool = Fire_ParticlePool()
 
     private val default_energy = 7
     private val default_move_energy = 5
@@ -78,27 +74,27 @@ class Firework_particle {
                 base_color = when (color_index) {
                     0 -> Color.argb(
                         255,
-                        color_sample.red - red,
-                        color_sample.green + green,
-                        color_sample.blue + blue
+                        color_sample.shr(16).and(0xFF) - red,
+                        color_sample.shr(8).and(0xFF) + green,
+                        color_sample.and(0xFF) + blue
                     )  //red FF0000
                     1 -> Color.argb(
                         255,
-                        color_sample.red - red,
-                        color_sample.green + green,
-                        color_sample.blue + blue
+                        color_sample.shr(16).and(0xFF) - red,
+                        color_sample.shr(8).and(0xFF) + green,
+                        color_sample.and(0xFF) + blue
                     )  //yellow FFCC00
                     2 -> Color.argb(
                         255,
-                        color_sample.red + red,
-                        color_sample.green - green,
-                        color_sample.blue + blue
+                        color_sample.shr(16).and(0xFF) + red,
+                        color_sample.shr(8).and(0xFF) - green,
+                        color_sample.and(0xFF) + blue
                     )  //green 00FF00
                     3 -> Color.argb(
                         255,
-                        color_sample.red + red,
-                        color_sample.green + green,
-                        color_sample.blue - blue
+                        color_sample.shr(16).and(0xFF) + red,
+                        color_sample.shr(8).and(0xFF) + green,
+                        color_sample.and(0xFF) - blue
                     )  //skyblue 00CCFF
                     else -> Color.argb(
                         255,
