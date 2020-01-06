@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.view.animation.AnimationUtils
 import com.example.MadWeek2.R
 import kotlinx.android.synthetic.main.activity_game.*
+import kotlinx.android.synthetic.main.activity_game.view.*
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -51,6 +53,10 @@ class GameActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_game)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val pulse = AnimationUtils.loadAnimation(this, R.anim.heart_pulse)
+        create_game.startAnimation(pulse)
+        join_game.startAnimation(pulse)
 
         mVisible = true
 
