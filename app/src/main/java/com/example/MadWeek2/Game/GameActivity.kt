@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
 import com.example.MadWeek2.R
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.activity_game.view.*
@@ -36,6 +37,7 @@ class GameActivity : AppCompatActivity() {
     }
     private var mVisible: Boolean = false
     private val mHideRunnable = Runnable { hide() }
+    private var game_started: Boolean = false
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -54,19 +56,65 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // Set Create game, Join game text pulses
         val pulse = AnimationUtils.loadAnimation(this, R.anim.heart_pulse)
         create_game.startAnimation(pulse)
         join_game.startAnimation(pulse)
 
+        create_game.setOnClickListener {
+            create_room()
+        }
+        leave_room_button.setOnClickListener {
+            leave_room()
+        }
+        quit_game.setOnClickListener {
+            finish()
+        }
+        start_game_button.setOnClickListener {
+            start_game()
+        }
+
+        joystickView_left.setOnMoveListener { angle, strength ->
+            myGameView.survivors[0]!!.setmovement(angle.toFloat(), strength/10.toFloat())
+        }
+        joystickView_right.setOnMoveListener { angle, _ ->
+            myGameView.survivors[0]!!.setshootangle(angle.toFloat())
+        }
+
         mVisible = true
 
         // Set up the user interaction to manually show or hide the system UI.
-        myGameView.setOnClickListener { toggle() }
+        myGameView.setOnClickListener { if (game_started) toggle() }
+        fullscreen_content_controls.setOnClickListener { if (game_started) toggle() }
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        dummy_button.setOnTouchListener(mDelayHideTouchListener)
+        pause_game.setOnClickListener {
+            myGameView.PauseGame()
+            resume_game.visibility = View.VISIBLE
+            pause_game.visibility = View.GONE
+        }
+        resume_game.setOnClickListener {
+            toggle()
+            myGameView.ResumeGame()
+            resume_game.visibility = View.GONE
+            pause_game.visibility = View.VISIBLE
+        }
+        stop_game.setOnClickListener {
+            toggle()
+            myGameView.RestartGame()
+            game_options.visibility = View.VISIBLE
+            joystickView_left.visibility = View.INVISIBLE
+            joystickView_right.visibility = View.INVISIBLE
+            game_started = false
+        }
+
+
+        var player_list = ArrayList<String>()
+        player_list.add("1. DEFAULT_NAME")
+        val adapter = ArrayAdapter(this, R.layout.room_member_item, player_list)
+        room_member_list.adapter = adapter
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -76,6 +124,25 @@ class GameActivity : AppCompatActivity() {
         // created, to briefly hint to the user that UI controls
         // are available.
         delayedHide(100)
+    }
+
+    private fun create_room() {
+        game_options.visibility = View.INVISIBLE
+        matchmaking_layout.visibility = View.VISIBLE
+    }
+
+    private fun leave_room() {
+        game_options.visibility = View.VISIBLE
+        matchmaking_layout.visibility = View.GONE
+    }
+
+    private fun start_game() {
+        joystickView_left.visibility = View.VISIBLE
+        joystickView_right.visibility = View.VISIBLE
+        matchmaking_layout.visibility = View.GONE
+
+        game_started = true
+        myGameView.StartGame(2)
     }
 
     private fun toggle() {
@@ -116,6 +183,10 @@ class GameActivity : AppCompatActivity() {
     private fun delayedHide(delayMillis: Int) {
         mHideHandler.removeCallbacks(mHideRunnable)
         mHideHandler.postDelayed(mHideRunnable, delayMillis.toLong())
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
     companion object {

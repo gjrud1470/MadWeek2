@@ -20,13 +20,21 @@ import android.view.animation.Animation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.afollestad.materialdialogs.MaterialDialog
+import com.example.MadWeek2.Retrofit.ContactService
+import com.example.MadWeek2.Retrofit.LoginService
+import com.example.MadWeek2.Retrofit.RetrofitClient
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import org.json.JSONObject
 import java.io.InputStream
 
 
@@ -89,12 +97,26 @@ class ContactsFragment :
     var fab_menu : FloatingActionButton? = null
     var isMenuOpen = false
 
+    lateinit var MyContactService: ContactService
+    internal var compositeDisposable = CompositeDisposable()
+
+    /* ************************************************************** */
+
+    override fun onStop() {
+        compositeDisposable.clear()
+        super.onStop()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_contacts, container, false)
+
+        // Setup for server communication
+        val retrofit = RetrofitClient.getInstance()
+        MyContactService = retrofit.create(ContactService::class.java)
 
         val swipeRefreshLayout = rootView.findViewById<SwipeRefreshLayout>(R.id.swipe_contacts)
         swipeRefreshLayout.setOnRefreshListener (this)
@@ -110,6 +132,22 @@ class ContactsFragment :
         addcontact!!.setOnClickListener { view ->
             var intent = Intent(view.context, Contact_edit::class.java)
             startActivityForResult(intent, REQUEST_NEW_CONTACT)
+        }
+        upload!!.setOnClickListener { view ->
+            val salt = find_login_info()
+            if (salt != null) {
+                //contact_update_number (salt, contacts_list.size.toString())
+                Toast.makeText(requireContext(), "Uploading...", Toast.LENGTH_LONG).show()
+                for (i in 0..(contacts_list.size - 1))
+                    contact_upload(salt, i.toString(), contacts_list[i].name!!, contacts_list[i].mobileNumber!!, contacts_list[i].group)
+                Toast.makeText(requireContext(), "Upload Done", Toast.LENGTH_LONG).show()
+            }
+        }
+        download!!.setOnClickListener { view ->
+            val salt = find_login_info()
+            if (salt != null) {
+                contact_download(salt)
+            }
         }
 
         return rootView
@@ -310,6 +348,46 @@ class ContactsFragment :
             cursor.close()
         }
         return ArrayList(list.sortedWith(compareBy({it.name})))
+    }
+
+    private fun contact_update_number (salt: String, contact_number: String) : Boolean {
+        var update_success = false
+        compositeDisposable.add(MyContactService.contact_update_number(salt, contact_number)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                val json_object = JSONObject(result)
+                val success = json_object.getString("update_success")
+
+                if (success == "success") update_success = true
+            })
+        return update_success
+    }
+
+    private fun contact_upload (salt: String, id: String, name: String, mobile_number: String, group: String?) {
+        compositeDisposable.add(MyContactService.contact_upload(salt, id, name, mobile_number, group)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                val json_object = JSONObject(result)
+                val success = json_object.getString("upload_success")   //try login_success
+                if (success != "success")
+                    Toast.makeText(requireContext(), ""+result, Toast.LENGTH_SHORT).show()
+            })
+    }
+
+    private fun contact_download (salt: String) {
+        compositeDisposable.add(MyContactService.contact_download(salt)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                Toast.makeText(requireContext(), ""+result, Toast.LENGTH_SHORT).show()
+            })
+    }
+
+    private fun find_login_info () : String? {
+        val pref : SharedPreferences = activity!!.getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        return pref.getString("salt", "")
     }
 
 }
