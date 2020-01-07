@@ -4,19 +4,29 @@ import android.view.SurfaceHolder
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.SurfaceView
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
+import android.widget.TabHost
 import android.widget.TextView
+import com.example.MadWeek2.FireworksView
+import com.example.MadWeek2.Game.Objects.Bullet_pool
+import com.example.MadWeek2.Game.Objects.Survivor
 import com.example.MadWeek2.R
 import io.github.controlwear.virtual.joystick.android.JoystickView
+import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.activity_game.view.*
 
 class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(context, attributeSet), SurfaceHolder.Callback {
 
     private var mHolder: SurfaceHolder
     private var mThread: DrawThread? = null
+    private var bulletThread: BulletThread? = null
+
+    var survivors = arrayOfNulls<Survivor>(2)
+    var bullets = Bullet_pool(resources)
 
     private var x1 = 0
     private var y1 = 0
@@ -57,6 +67,8 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
 
     override fun surfaceCreated(holder: SurfaceHolder) {
         mThread = DrawThread(mHolder)
+        bulletThread = BulletThread(mHolder)
+
         cx = Width_d/2
         cy = Height_d/2
         x1 = cx
@@ -68,9 +80,6 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
         imgBack = Bitmap.createScaledBitmap(imgBack!!, Width_d * 2, Height_d * 2, true)
 
         mThread!!.start()
-
-        val joystickleft = findViewById<JoystickView>(R.id.joystickView_left)
-        joystickleft.visibility = View.VISIBLE
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
@@ -83,12 +92,26 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
         }
     }
 
+    fun StartGame(players: Int) {
+        val player1 = Survivor()
+        player1.init((Width_d.toFloat()/2)-100, Height_d.toFloat()/2, 0.toFloat(), Width_d.toFloat(), Height_d.toFloat(), 1, resources)
+        val player2 = Survivor()
+        player2.init((Width_d.toFloat()/2)+100, Height_d.toFloat()/2, 0.toFloat(), Width_d.toFloat(), Height_d.toFloat(), 2, resources)
+        survivors[0] = player1
+        survivors[1] = player2
+
+
+        bulletThread!!.start()
+    }
+
     fun StopGame() {
         mThread!!.bExit = true
+        bulletThread!!.bulletExit = true
 
         while (true) {
             try {
-                mThread!!.join() // Thread 종료 기다리기
+                mThread!!.join()
+                bulletThread!!.join()
                 break
             } catch (e: Exception) {
             }
@@ -97,26 +120,26 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
 
     fun PauseGame() {
         mThread!!.isWait = true
-
-        while (true) {
-            try {
-                mThread!!.join() // Thread 종료 기다리기
-                break
-            } catch (e: Exception) {
-            }
-        }
+        bulletThread!!.isWait = true
     }
 
     fun ResumeGame() {
         mThread!!.isWait = false
+        bulletThread!!.isWait = false
     }
 
     fun RestartGame() {
         StopGame()  // 스레드 중지
 
+        for (i in 0..1) {
+            survivors[i] = null
+        }
+
         // 현재의 스레드를 비우고 다시 생성
         mThread = null
         mThread = DrawThread(mHolder)
+        bulletThread = null
+        bulletThread = BulletThread(mHolder)
         mThread!!.start()
     }
 
@@ -133,6 +156,13 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
         fun MoveAll() {
             ScrollImage()
             src.set(x1, y1, x1 + cx, y1 + cy)
+
+            for (i in 0..1) {
+                if (survivors[i] != null)
+                    survivors[i]!!.animate()
+            }
+
+            bullets.animate()
         }
 
         fun ScrollImage() {
@@ -149,7 +179,17 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
         }
 
         fun DrawAll(canvas: Canvas) {
+            // Draw background
             canvas.drawBitmap(imgBack!!, src, dst, null)
+
+            // Draw Bullets
+            bullets.doDraw(canvas)
+
+            // Draw Survivors
+            for (i in 0..1) {
+                if (survivors[i] != null)
+                    survivors[i]!!.doDraw(canvas)
+            }
         }
 
         fun SizeChange(Width: Int, Height: Int) {
@@ -178,6 +218,51 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
                 } catch (e: Exception) {
                 }
 
+                while (isWait) {
+                    try {
+                        sleep(DELAY)
+                    } catch (e: Exception) {
+                    }
+                }
+            }
+        }
+    }
+
+    internal inner class BulletThread (var bHolder: SurfaceHolder) : Thread() {
+        var bulletExit: Boolean = false
+        var isWait: Boolean = false
+
+        var bWidth: Int = 0
+        var bHeight: Int = 0
+
+        init {
+            bulletExit = false
+        }
+
+        fun SizeChange(Width: Int, Height: Int) {
+            bWidth = Width
+            bHeight = Height
+        }
+
+        override  fun run() {
+            while (bulletExit == false) {
+                run {
+                    for (i in 0..0) {
+                        if (survivors[i] != null) {
+                            bullets.create(
+                                survivors[i]!!.x_+50,
+                                survivors[i]!!.y_+50,
+                                Width_d.toFloat(),
+                                Height_d.toFloat(),
+                                survivors[i]!!.angle_
+                            )
+                        }
+                    }
+                }
+                try {
+                    sleep(DELAY*20)
+                } catch (e: Exception) {
+                }
                 while (isWait) {
                     try {
                         sleep(DELAY)

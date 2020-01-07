@@ -54,16 +54,10 @@ class LoginActivity : AppCompatActivity() {
     private fun run_login() {
         //Init API
         val retrofit = RetrofitClient.getInstance()
-        if (retrofit != null) {
-            iMyService = retrofit.create(LoginService::class.java)
+        iMyService = retrofit.create(LoginService::class.java)
 
-            try_pre_login()
-            start_login()
-        }
-        else {
-            var intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+        try_pre_login()
+        start_login()
     }
 
     private fun try_pre_login() {
