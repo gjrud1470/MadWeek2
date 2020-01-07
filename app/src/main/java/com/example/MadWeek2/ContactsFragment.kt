@@ -34,6 +34,7 @@ import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.InputStream
 
@@ -99,6 +100,8 @@ class ContactsFragment :
 
     lateinit var MyContactService: ContactService
     internal var compositeDisposable = CompositeDisposable()
+    var cloud_contact_number : Int? = null
+    var contact_buffer : JSONArray? = null
 
     /* ************************************************************** */
 
@@ -136,17 +139,22 @@ class ContactsFragment :
         upload!!.setOnClickListener { view ->
             val salt = find_login_info()
             if (salt != null) {
-                //contact_update_number (salt, contacts_list.size.toString())
+                var list = ContactHolder.getDataList()
+                contact_update_number (salt, list.size.toString())
                 Toast.makeText(requireContext(), "Uploading...", Toast.LENGTH_LONG).show()
-                for (i in 0..(contacts_list.size - 1))
-                    contact_upload(salt, i.toString(), contacts_list[i].name!!, contacts_list[i].mobileNumber!!, contacts_list[i].group)
+                for (i in 0..(list.size - 1))
+                    contact_upload(salt, i.toString(), list[i].name!!, list[i].mobileNumber!!, list[i].group)
                 Toast.makeText(requireContext(), "Upload Done", Toast.LENGTH_LONG).show()
             }
         }
         download!!.setOnClickListener { view ->
             val salt = find_login_info()
             if (salt != null) {
-                contact_download(salt)
+                contact_get_num(salt)
+                if (cloud_contact_number != null) {
+                    contact_buffer = JSONArray()
+                    contact_download(salt)
+                }
             }
         }
 
@@ -330,7 +338,10 @@ class ContactsFragment :
                         info.id = id
                         info.name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                         val raw_number : String = cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                        info.mobileNumber = raw_number.substring(0, 3) + "-" + raw_number.substring(3, raw_number.lastIndex-3) + "-" + raw_number.substring(raw_number.lastIndex-3, raw_number.length)
+                        if(!raw_number.contains("-"))
+                            info.mobileNumber = raw_number.substring(0, 3) + "-" + raw_number.substring(3, raw_number.lastIndex-3) + "-" + raw_number.substring(raw_number.lastIndex-3, raw_number.length)
+                        else
+                            info.mobileNumber = raw_number
                         info.photo = photo
                         //info.photoURI= pURI
 
@@ -350,8 +361,7 @@ class ContactsFragment :
         return ArrayList(list.sortedWith(compareBy({it.name})))
     }
 
-    private fun contact_update_number (salt: String, contact_number: String) : Boolean {
-        var update_success = false
+    private fun contact_update_number (salt: String, contact_number: String) {
         compositeDisposable.add(MyContactService.contact_update_number(salt, contact_number)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -359,9 +369,9 @@ class ContactsFragment :
                 val json_object = JSONObject(result)
                 val success = json_object.getString("update_success")
 
-                if (success == "success") update_success = true
+                if (success != "success")
+                    Toast.makeText(requireContext(), success, Toast.LENGTH_SHORT).show()
             })
-        return update_success
     }
 
     private fun contact_upload (salt: String, id: String, name: String, mobile_number: String, group: String?) {
@@ -370,9 +380,9 @@ class ContactsFragment :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
                 val json_object = JSONObject(result)
-                val success = json_object.getString("upload_success")   //try login_success
+                val success = json_object.getString("upload_success")
                 if (success != "success")
-                    Toast.makeText(requireContext(), ""+result, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), success, Toast.LENGTH_SHORT).show()
             })
     }
 
@@ -381,13 +391,58 @@ class ContactsFragment :
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { result ->
-                Toast.makeText(requireContext(), ""+result, Toast.LENGTH_SHORT).show()
+                val json_object = JSONArray(result)
+                merge_json_list(json_object)
+                //Toast.makeText(requireContext(), ""+result, Toast.LENGTH_SHORT).show()
+            })
+    }
+
+    private fun contact_get_num (salt: String) {
+        compositeDisposable.add(MyContactService.contact_get_num(salt)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { result ->
+                val json_object = JSONObject(result)
+                val success = json_object.getString("get_number_success")
+                if (success == "success") {
+                    cloud_contact_number = json_object.getInt("contact_number")
+                }
+                //Toast.makeText(requireContext(), ""+result, Toast.LENGTH_SHORT).show()
             })
     }
 
     private fun find_login_info () : String? {
         val pref : SharedPreferences = activity!!.getSharedPreferences("UserData", Context.MODE_PRIVATE)
         return pref.getString("salt", "")
+    }
+
+    private fun merge_json_list(jsonarray: JSONArray) {
+        var contact : ContactModel? = null
+        var list = ContactHolder.getDataList()
+
+        for (i in 0..cloud_contact_number!!-1) {
+            var duplicate = false
+            var jsonobject = jsonarray.get(i) as JSONObject
+            contact = ContactModel()
+
+            contact.name = jsonobject.getString("name")
+            contact.mobileNumber = jsonobject.getString("mobile_number")
+            contact.group = jsonobject.getString("group")
+            for (i in 0..list.size-1) {
+                if (list[i].name == contact.name) {
+                    duplicate = true
+                    break
+                }
+            }
+            if (!duplicate) {
+                list.add(contact)
+                //Log.wtf("hello", "added contact")
+            }
+        }
+
+        ContactHolder.setDataList(list)
+        ContactHolder.sortData()
+        SetupContactsView()
     }
 
 }

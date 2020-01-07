@@ -12,12 +12,14 @@ interface ContactService {
                         @Field("mobile_number") mobile_number:String,
                         @Field("group") group:String?) : Observable<String>
 
-    @GET("contact_download/:")
-    @FormUrlEncoded
-    fun contact_download (@Url url: String) : Observable<String>
+    @GET("contact_download/{salt}")
+    fun contact_download (@Path(value = "salt", encoded = true) salt: String) : Observable<String>
 
     @POST("contact_update_num")
     @FormUrlEncoded
     fun contact_update_number (@Field("salt") salt:String,
                                @Field("contact_number") contact_number:String) : Observable<String>
+
+    @GET("contact_get_num/{salt}")
+    fun contact_get_num (@Path(value = "salt", encoded = true) salt: String) : Observable<String>
 }
