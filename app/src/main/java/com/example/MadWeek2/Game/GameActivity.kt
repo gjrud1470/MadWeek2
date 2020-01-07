@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.example.MadWeek2.R
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.activity_game.view.*
@@ -37,7 +39,10 @@ class GameActivity : AppCompatActivity() {
     }
     private var mVisible: Boolean = false
     private val mHideRunnable = Runnable { hide() }
-    private var game_started: Boolean = false
+
+    var game_started: Boolean = false
+    var pulse : Animation? = null
+
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -57,7 +62,7 @@ class GameActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Set Create game, Join game text pulses
-        val pulse = AnimationUtils.loadAnimation(this, R.anim.heart_pulse)
+        pulse = AnimationUtils.loadAnimation(this, R.anim.heart_pulse)
         create_game.startAnimation(pulse)
         join_game.startAnimation(pulse)
 
@@ -75,10 +80,12 @@ class GameActivity : AppCompatActivity() {
         }
 
         joystickView_left.setOnMoveListener { angle, strength ->
-            myGameView.survivors[0]!!.setmovement(angle.toFloat(), strength/10.toFloat())
+            val myplayer = myGameView.survivors[0]
+            myplayer?.setmovement(angle.toFloat(), strength/10.toFloat())
         }
         joystickView_right.setOnMoveListener { angle, _ ->
-            myGameView.survivors[0]!!.setshootangle(angle.toFloat())
+            val myplayer = myGameView.survivors[0]
+            myplayer?.setshootangle(angle.toFloat())
         }
 
         mVisible = true
@@ -103,11 +110,7 @@ class GameActivity : AppCompatActivity() {
         }
         stop_game.setOnClickListener {
             toggle()
-            myGameView.RestartGame()
-            game_options.visibility = View.VISIBLE
-            joystickView_left.visibility = View.INVISIBLE
-            joystickView_right.visibility = View.INVISIBLE
-            game_started = false
+            restart_game()
         }
 
 
@@ -127,7 +130,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun create_room() {
-        game_options.visibility = View.INVISIBLE
+        game_options.visibility = View.GONE
         matchmaking_layout.visibility = View.VISIBLE
     }
 
@@ -143,6 +146,19 @@ class GameActivity : AppCompatActivity() {
 
         game_started = true
         myGameView.StartGame(2)
+    }
+
+    fun restart_game() {
+        myGameView.RestartGame()
+
+        joystickView_left.visibility = View.GONE
+        joystickView_right.visibility = View.GONE
+        game_options.visibility = View.VISIBLE
+        create_join_holder.visibility = View.VISIBLE
+        create_game.visibility = View.VISIBLE
+        join_game.visibility = View.VISIBLE
+
+        game_started = false
     }
 
     private fun toggle() {

@@ -2,24 +2,26 @@ package com.example.MadWeek2.Game.Objects
 
 import android.content.res.Resources
 import android.graphics.Canvas
-import android.util.Log
+import kotlin.math.abs
 
 class Bullet_pool (resources: Resources) {
-    private val POOL_SIZE = 100
-    private var particles_ = Array<Bullet>(POOL_SIZE, { i -> Bullet() })
+    private val POOL_SIZE = 30
+    private var bullets_ = Array<Bullet>(POOL_SIZE, { i -> Bullet() })
     private var first_available : Int? = 0
     private var resources_ = resources
 
+    private var radius = 5
+
     init {
         for (i in 0..POOL_SIZE-1) {
-            particles_[i].setNext(i+1)
+            bullets_[i].setNext(i+1)
         }
-        particles_[POOL_SIZE-1].setNext(null)
+        bullets_[POOL_SIZE-1].setNext(null)
     }
 
     fun create (x:Float, y:Float, screen_width:Float, screen_height:Float, angle:Float) {
         if (first_available != null) {
-            val particle: Bullet = particles_[first_available!!]
+            val particle: Bullet = bullets_[first_available!!]
             particle.init(x, y, screen_width, screen_height, angle, resources_)
             first_available = particle.getNext()
         }
@@ -27,8 +29,8 @@ class Bullet_pool (resources: Resources) {
 
     fun animate() {
         for (i in IntArray(POOL_SIZE) {int -> int}) {
-            if (particles_[i].animate()) {
-                particles_[i].setNext(first_available)
+            if (bullets_[i].animate()) {
+                bullets_[i].setNext(first_available)
                 first_available = i
             }
         }
@@ -36,8 +38,19 @@ class Bullet_pool (resources: Resources) {
 
     fun doDraw(canvas: Canvas?) {
         for (i in IntArray(POOL_SIZE) {int -> int}) {
-            particles_[i].doDraw(canvas)
+            bullets_[i].doDraw(canvas)
         }
+    }
+
+    fun check_killed (hunter: Hunter) : Boolean {
+        for (i in 0..POOL_SIZE-1) {
+            if (bullets_[i].inUse()
+                && abs(bullets_[i].x_ - hunter.x_) < radius + hunter.radius
+                && abs(bullets_[i].y_ - hunter.y_) < radius + hunter.radius) {
+                return true
+            }
+        }
+        return false
     }
 
 }
