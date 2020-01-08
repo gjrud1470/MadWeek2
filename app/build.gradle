@@ -54,4 +54,8 @@ dependencies {
     //Virtual Joystick
     implementation 'io.github.controlwear:virtualjoystick:1.10.1'
 
+    compile 'com.google.code.gson:gson:2.8.2'                 // Gson 사용시
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'     // Gson 처리시
+    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'  // String 처리시
 }
