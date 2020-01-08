@@ -202,7 +202,7 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
         else {y -= Height_d}
 
         hunters.create(x.toFloat(), y.toFloat(),
-            Width_d.toFloat(), Height_d.toFloat(), 0)
+            Width_d.toFloat(), Height_d.toFloat(), id)
     }
 
     internal inner class DrawThread(var mHolder: SurfaceHolder) : Thread() {
@@ -275,7 +275,9 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
 
             if (toast_flag && survivors_created
                 && survivors[0] == null && survivors[1] == null) {
+
                 survivors_created = false
+                toast_flag = false
 
                 //RestartGame()
                 mhandler!!.post {

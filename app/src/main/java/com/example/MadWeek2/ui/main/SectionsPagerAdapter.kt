@@ -27,16 +27,16 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
         return when (position) {
+            //0 -> {
+            //    HomeFragment()
+            //}
             0 -> {
-                HomeFragment()
-            }
-            1 -> {
                 ContactsFragment()
             }
-            2 -> {
+            1 -> {
                 PhotoFragment()
             }
-            3 -> {
+            2 -> {
                 GameFragment()
             }
             else -> PlaceholderFragment.newInstance(position + 1)
@@ -49,6 +49,6 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
 
     override fun getCount(): Int {
         // Show 4 total pages.
-        return 4
+        return 3
     }
 }

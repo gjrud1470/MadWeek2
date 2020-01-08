@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Happy</string>
-    <string name="tab_text_1">Home</string>
-    <string name="tab_text_2">Contact</string>
-    <string name="tab_text_3">Images</string>
+    <string name="app_name">Dodge!!</string>
+    <string name="tab_text_1">Contact</string>
+    <string name="tab_text_2">Images</string>
+    <string name="tab_text_3">DODGE!!</string>
     <string name="tab_text_4">DODGE!!</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>

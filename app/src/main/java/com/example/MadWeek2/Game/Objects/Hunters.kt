@@ -41,6 +41,7 @@ class Hunter_pool (resources: Resources, bulletPool: Bullet_pool) {
             val next_available = hunters[first_available!!].getNext()
             val hunter = when (id) {
                 0 -> Timmy()
+                1 -> Alex()
                 else -> Timmy()
             }
             hunters[first_available!!] = hunter
