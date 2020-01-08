@@ -15,7 +15,7 @@ class Bullet {
     private var yVel_:Float = 0.toFloat()
     private var screen_width_:Float = 0.toFloat()
     private var screen_height_:Float = 0.toFloat()
-    private var vel = 20.toFloat()
+    private var vel = 30.toFloat()
     private var paint : Paint? = null
 
     private var next:Int? = null
@@ -41,7 +41,7 @@ class Bullet {
 
     fun doDraw(canvas: Canvas?) {
         if (!inUse()) return
-        canvas!!.drawCircle(x_-4, y_-4, 8f, paint!!)
+        canvas?.drawCircle(x_-4, y_-4, 8f, paint!!)
     }
 
     fun inUse() : Boolean {

@@ -54,14 +54,20 @@ class Hunter_pool (resources: Resources, bulletPool: Bullet_pool) {
         var hit_id = 0
         for (i in IntArray(POOL_SIZE) {int -> int}) {
             hunters[i].animate(x1, y1, x2, y2)
-            hit_id = check_reached(hunters[i], x1, y1, x2, y2)
-            if (hit_id != 0) {
-                return hit_id
-            }
+
             if (bulletPool_.check_killed(hunters[i])) {
                 hunters[i].alive = false
                 hunters[i].setNext(first_available)
                 first_available = i
+                return 0
+            }
+
+            hit_id = check_reached(hunters[i], x1, y1, x2, y2)
+            if (hit_id != 0) {
+                hunters[i].alive = false
+                hunters[i].setNext(first_available)
+                first_available = i
+                return hit_id
             }
         }
         return hit_id
@@ -74,6 +80,22 @@ class Hunter_pool (resources: Resources, bulletPool: Bullet_pool) {
     }
 
     fun check_reached (hunter: Hunter, x1:Float?, y1:Float?, x2:Float?, y2:Float?) : Int {
+
+        var dist1 = 0.toDouble()
+        var dist2 = 0.toDouble()
+        if (x1 != null && y1 != null) {
+            dist1 = Math.sqrt(Math.pow(x1 - hunter.x_.toDouble(), 2.toDouble())
+                    + Math.pow(y1 - hunter.y_.toDouble(), 2.toDouble()))
+            if (dist1 < survivor_radius + hunter.radius) return 1
+        }
+        if (x2 != null && y2 != null) {
+            dist2 = Math.sqrt(Math.pow(x2 - hunter.x_.toDouble(), 2.toDouble())
+                    + Math.pow(y2 - hunter.y_.toDouble(), 2.toDouble()))
+            if (dist2 < survivor_radius + hunter.radius) return 2
+        }
+        return 0
+
+        /*
         if (x1 != null && y1 != null
             && abs(hunter.x_ - x1) < survivor_radius + hunter.radius
             && abs(hunter.y_ - y1) < survivor_radius + hunter.radius) {
@@ -85,6 +107,7 @@ class Hunter_pool (resources: Resources, bulletPool: Bullet_pool) {
             return 2
         }
         return 0
+         */
     }
 
 }

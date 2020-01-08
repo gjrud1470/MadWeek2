@@ -22,4 +22,7 @@ interface ContactService {
 
     @GET("contact_get_num/{salt}")
     fun contact_get_num (@Path(value = "salt", encoded = true) salt: String) : Observable<String>
+
+    @GET("user_name/{salt}")
+    fun get_user_name (@Path(value = "salt", encoded = true) salt: String) : Observable<String>
 }

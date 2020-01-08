@@ -36,7 +36,7 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
     private var mHolder: SurfaceHolder
     private var mThread: DrawThread? = null
     private var bulletThread: BulletThread? = null
-    private var hunterThread: HunterThread? = null
+    //private var hunterThread: HunterThread? = null
 
     var survivors = arrayOfNulls<Survivor>(2)
     var bullets = Bullet_pool(resources)
@@ -58,9 +58,14 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
     var dst = Rect()
 
     var mhandler : Handler? = null
+    private var toast_flag = true
+    var player1flag = false
+    var player2flag = false
+    var player1death = false
+    var player2death = false
 
     companion object {
-        val DELAY = 10L
+        val DELAY = 25L
     }
 
     init {
@@ -88,7 +93,7 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
     override fun surfaceCreated(holder: SurfaceHolder) {
         mThread = DrawThread(mHolder)
         bulletThread = BulletThread(mHolder)
-        hunterThread = HunterThread(mHolder)
+        //hunterThread = HunterThread(mHolder)
 
         cx = Width_d/2
         cy = Height_d/2
@@ -114,9 +119,9 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
         if (bulletThread != null) {
             bulletThread!!.SizeChange(width, height)
         }
-        if (hunterThread != null) {
-            hunterThread!!.SizeChange(width, height)
-        }
+        //if (hunterThread != null) {
+            //hunterThread!!.SizeChange(width, height)
+        //}
     }
 
     fun StartGame(players: Int) {
@@ -130,21 +135,24 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
         survivors[1] = player2
 
         survivors_created = true
+        toast_flag = true
+        player1flag = false
+        player2flag = false
 
         bulletThread!!.start()
-        hunterThread!!.start()
+        //hunterThread!!.start()
     }
 
     fun StopGame() {
         mThread!!.bExit = true
         bulletThread!!.bulletExit = true
-        hunterThread!!.hunterExit = true
+        //hunterThread!!.hunterExit = true
 
         while (true) {
             try {
                 mThread!!.join()
                 bulletThread!!.join()
-                hunterThread!!.join()
+                //hunterThread!!.join()
                 break
             } catch (e: Exception) {
             }
@@ -154,17 +162,18 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
     fun PauseGame() {
         mThread!!.isWait = true
         bulletThread!!.isWait = true
-        hunterThread!!.isWait = true
+        //hunterThread!!.isWait = true
     }
 
     fun ResumeGame() {
         mThread!!.isWait = false
         bulletThread!!.isWait = false
-        hunterThread!!.isWait = false
+        //hunterThread!!.isWait = false
     }
 
     fun RestartGame() {
         StopGame()  // 스레드 중지
+        toast_flag = false
 
         for (i in 0..1) {
             survivors[i] = null
@@ -175,13 +184,25 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
         mThread = DrawThread(mHolder)
         bulletThread = null
         bulletThread = BulletThread(mHolder)
-        hunterThread = null
-        hunterThread = HunterThread(mHolder)
+        //hunterThread = null
+        //hunterThread = HunterThread(mHolder)
 
         bullets = Bullet_pool(resources)
         hunters = Hunter_pool(resources, bullets)
 
         mThread!!.start()
+    }
+
+    fun hunter_create (x: Double, y: Double, id: Int) {
+        var x = x * Width_d
+        var y = y * Height_d
+        if (x < Width_d/2) {x += Width_d}
+        else {x -= Width_d}
+        if (y < Height_d/2) {y += Height_d}
+        else {y -= Height_d}
+
+        hunters.create(x.toFloat(), y.toFloat(),
+            Width_d.toFloat(), Height_d.toFloat(), 0)
     }
 
     internal inner class DrawThread(var mHolder: SurfaceHolder) : Thread() {
@@ -230,9 +251,15 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
                 )
             }
 
-            if (hit_id != 0) {
-                survivors[hit_id-1] = null
+            if (player1death) survivors[0] = null
+            if (player2death) survivors[1] = null
 
+            if (hit_id != 0) {
+                if (hit_id == 1) player1flag = true
+                else if (hit_id == 2) player2flag = true
+                gameactivity.mSocket!!.emit("player_truly_dead", hit_id)
+                //survivors[hit_id-1] = null
+/*
                 if (survivors[0] != null || survivors[1] != null) {
                     mhandler!!.post {
                         run() {
@@ -243,9 +270,11 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
                         }
                     }
                 }
+ */
             }
 
-            if (survivors_created && survivors[0] == null && survivors[1] == null) {
+            if (toast_flag && survivors_created
+                && survivors[0] == null && survivors[1] == null) {
                 survivors_created = false
 
                 //RestartGame()
@@ -355,7 +384,7 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
                     }
                 }
                 try {
-                    sleep(DELAY*20)
+                    sleep(DELAY*10)
                 } catch (e: Exception) {
                 }
                 while (isWait) {

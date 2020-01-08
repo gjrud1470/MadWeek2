@@ -10,7 +10,7 @@ class Bullet_pool (resources: Resources) {
     private var first_available : Int? = 0
     private var resources_ = resources
 
-    private var radius = 5
+    private var radius = 8
 
     init {
         for (i in 0..POOL_SIZE-1) {
@@ -43,14 +43,26 @@ class Bullet_pool (resources: Resources) {
     }
 
     fun check_killed (hunter: Hunter) : Boolean {
+        var dist = 0.toDouble()
+
         for (i in 0..POOL_SIZE-1) {
-            if (bullets_[i].inUse()
+            if (bullets_[i].inUse()) {
+                dist = Math.sqrt(
+                    Math.pow(bullets_[i].x_ - hunter.x_.toDouble(), 2.toDouble())
+                            + Math.pow(bullets_[i].y_ - hunter.y_.toDouble(), 2.toDouble())
+                )
+                if (dist < radius + hunter.radius) return true
+            }
+        }
+        return false
+                    /*
                 && abs(bullets_[i].x_ - hunter.x_) < radius + hunter.radius
                 && abs(bullets_[i].y_ - hunter.y_) < radius + hunter.radius) {
                 return true
             }
         }
-        return false
+        return false*/
+
     }
 
 }
