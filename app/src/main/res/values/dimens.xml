@@ -3,11 +3,15 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="appbar_padding">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="fab_margin">18dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
     <dimen name="download">65dp</dimen>
     <dimen name="upload">135dp</dimen>
     <dimen name="add_contact">205dp</dimen>
+
+    <dimen name="feb_menu">65dp</dimen>
+    <dimen name="delete">135dp</dimen>
+    <dimen name="path">205dp</dimen>
 </resources>
