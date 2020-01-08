@@ -16,5 +16,4 @@ object RetrofitClient {
                 .build()
         return instance!!
     }
-
 }

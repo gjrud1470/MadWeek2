@@ -6,22 +6,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/btn_setting"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:background="@color/colorAccent"
-        android:maxWidth="35dp"
-        android:maxHeight="35dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/folder"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:scaleType="center"
+        android:src="@drawable/menu_black_mini"
+        android:tint="@color/black_overlay"
+        app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.975"
-        app:layout_constraintVertical_bias="0.025"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.010" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:scaleType="center"
+        android:src="@drawable/path"
+        android:tint="@color/black_overlay"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.010" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:backgroundTint="@color/white"
+        android:clickable="true"
+        android:scaleType="center"
+        android:src="@drawable/delete"
+        android:tint="@color/black_overlay"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.975"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.010" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
@@ -36,6 +73,4 @@
         app:layout_constraintVertical_bias="0.0">
 
     </androidx.viewpager.widget.ViewPager>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
