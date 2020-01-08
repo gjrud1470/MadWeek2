@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#FFFFFF"
     android:id="@+id/game_holder_layout"
     tools:context=".Game.GameActivity">
 
@@ -22,44 +22,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/game_options"
+        android:elevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/create_join_holder"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/create_game"
-            android:layout_width="250dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/yellow"
-            android:fontFamily="sans-serif"
-            android:text="CREATE GAME"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:id="@+id/create_join_holder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/join_game"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/yellow"
-            android:fontFamily="sans-serif"
-            android:text="JOIN GAME"
-            android:textSize="30dp"
-            android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/create_game"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/yellow"
+                android:fontFamily="sans-serif"
+                android:text="CREATE GAME"
+                android:textSize="30dp"
+                android:textStyle="bold"/>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/join_game"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/yellow"
+                android:fontFamily="sans-serif"
+                android:text="JOIN GAME"
+                android:textSize="30dp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
 
     <TextView
         android:id="@+id/quit_game"

@@ -54,8 +54,18 @@ dependencies {
     //Virtual Joystick
     implementation 'io.github.controlwear:virtualjoystick:1.10.1'
 
+
+    // Socket.io
+    implementation('io.socket:socket.io-client:1.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+    implementation group: 'io.socket', name: 'socket.io-client', version: '1.0.0'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+
+
     compile 'com.google.code.gson:gson:2.8.2'                 // Gson 사용시
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'     // Gson 처리시
     compile 'com.squareup.retrofit2:converter-scalars:2.3.0'  // String 처리시
+
 }

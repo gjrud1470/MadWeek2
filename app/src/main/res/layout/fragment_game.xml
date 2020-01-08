@@ -5,10 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".GameFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:elevation="1dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:text="DODGE!!" />
+
+
     <ImageView
         android:id="@+id/gallog_start_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_background"/>
 
     <TextView
         android:id="@+id/touch_to_start"

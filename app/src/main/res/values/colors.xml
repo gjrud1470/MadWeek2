@@ -40,6 +40,7 @@
     <color name="joystick_border">#80BDBDBD</color>
 
     <color name="bullet">#000000</color>
-    <color name="timmy">#5F1111</color>
+    <color name="timmy">#1031B6</color>
+    <color name="alex">#FF0000</color>
 
 </resources>

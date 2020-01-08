@@ -338,7 +338,7 @@ class ContactsFragment :
                         info.id = id
                         info.name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                         val raw_number : String = cursorInfo.getString(cursorInfo.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                        if(!raw_number.contains("-"))
+                        if(!raw_number.contains("-") && raw_number.length > 7)
                             info.mobileNumber = raw_number.substring(0, 3) + "-" + raw_number.substring(3, raw_number.lastIndex-3) + "-" + raw_number.substring(raw_number.lastIndex-3, raw_number.length)
                         else
                             info.mobileNumber = raw_number
