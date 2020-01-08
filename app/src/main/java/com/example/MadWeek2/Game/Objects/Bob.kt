@@ -5,21 +5,21 @@ import android.graphics.*
 import android.util.Log
 import com.example.MadWeek2.R
 
-class Timmy : Hunter() {
+class Bob : Hunter() {
     override var x_:Float = 0.toFloat()
     override var y_:Float = 0.toFloat()
-    override var radius: Float = 10.toFloat()
+    override var radius: Float = 200.toFloat()
     override var alive: Boolean = false
 
     private var screen_width_ = 0.toFloat()
     private var screen_height_ = 0.toFloat()
 
-    private var vel = 3.toFloat()
+    private var vel = 1.toFloat()
     private var paint : Paint? = null
 
     private var next:Int? = null
 
-    override var health: Int = 1
+    override var health: Int = 50
 
     override fun init(x:Float, y:Float, screen_width:Float, screen_height:Float, resources: Resources) {
         x_ = x
@@ -29,7 +29,7 @@ class Timmy : Hunter() {
         screen_height_ = screen_height
 
         paint = Paint()
-        paint!!.setColor(resources.getColor(R.color.timmy))
+        paint!!.setColor(resources.getColor(R.color.bob))
     }
 
     override fun animate(x1:Float?, y1:Float?, x2:Float?, y2:Float?) {
@@ -88,7 +88,7 @@ class Timmy : Hunter() {
     override fun doDraw(canvas: Canvas?) {
         if (!inUse()) return
         if (inScreen()) {
-            canvas!!.drawCircle(x_, y_, 20f, paint!!)
+            canvas!!.drawCircle(x_, y_, 200f, paint!!)
         }
     }
 

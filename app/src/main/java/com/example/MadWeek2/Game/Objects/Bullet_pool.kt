@@ -51,7 +51,11 @@ class Bullet_pool (resources: Resources) {
                     Math.pow(bullets_[i].x_ - hunter.x_.toDouble(), 2.toDouble())
                             + Math.pow(bullets_[i].y_ - hunter.y_.toDouble(), 2.toDouble())
                 )
-                if (dist < radius + hunter.radius) return true
+                if (dist < radius + hunter.radius) {
+                    hunter.health--
+                    if (hunter.health <= 0)
+                        return true
+                }
             }
         }
         return false

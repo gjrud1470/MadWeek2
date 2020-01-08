@@ -16,10 +16,12 @@ class Alex : Hunter() {
     private var screen_width_ = 0.toFloat()
     private var screen_height_ = 0.toFloat()
 
-    private var vel = 0.3.toFloat()
+    private var vel = 0.1.toFloat()
     private var paint : Paint? = null
 
     private var next:Int? = null
+
+    override var health: Int = 1
 
     override fun init(x:Float, y:Float, screen_width:Float, screen_height:Float, resources: Resources) {
         x_ = x

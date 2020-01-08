@@ -10,6 +10,7 @@ abstract class Hunter {
     abstract var y_ : Float
     abstract var radius : Float
     abstract var alive : Boolean
+    abstract var health : Int
 
     abstract fun init(x:Float, y:Float, screen_width:Float, screen_height:Float, resources: Resources)
     abstract fun animate(x1:Float?, y1:Float?, x2:Float?, y2:Float?)
@@ -42,6 +43,7 @@ class Hunter_pool (resources: Resources, bulletPool: Bullet_pool) {
             val hunter = when (id) {
                 0 -> Timmy()
                 1 -> Alex()
+                2 -> Bob()
                 else -> Timmy()
             }
             hunters[first_available!!] = hunter
