@@ -285,6 +285,7 @@ class GameActivity : AppCompatActivity() {
 
         game_options.visibility = View.GONE
         matchmaking_layout.visibility = View.VISIBLE
+        start_game_button.visibility = View.VISIBLE
     }
 
     private fun join_room(name : String) {

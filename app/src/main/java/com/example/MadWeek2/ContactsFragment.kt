@@ -151,9 +151,11 @@ class ContactsFragment :
             val salt = find_login_info()
             if (salt != null) {
                 contact_get_num(salt)
+                Toast.makeText(requireContext(), "Downloading...", Toast.LENGTH_LONG).show()
                 if (cloud_contact_number != null) {
                     contact_buffer = JSONArray()
                     contact_download(salt)
+                    Toast.makeText(requireContext(), "Download Done", Toast.LENGTH_LONG).show()
                 }
             }
         }
