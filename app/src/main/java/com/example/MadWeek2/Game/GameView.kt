@@ -174,6 +174,10 @@ class GameView(context: Context, attributeSet: AttributeSet) : SurfaceView(conte
     fun RestartGame() {
         StopGame()  // 스레드 중지
         toast_flag = false
+        player1flag = false
+        player2flag = false
+        player1death = false
+        player2death = false
 
         for (i in 0..1) {
             survivors[i] = null

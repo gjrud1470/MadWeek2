@@ -16,7 +16,7 @@ class Alex : Hunter() {
     private var screen_width_ = 0.toFloat()
     private var screen_height_ = 0.toFloat()
 
-    private var vel = 0.2.toFloat()
+    private var vel = 0.1.toFloat()
     private var paint : Paint? = null
 
     private var next:Int? = null

@@ -19,7 +19,7 @@ class Bob : Hunter() {
 
     private var next:Int? = null
 
-    override var health: Int = 20
+    override var health: Int = 50
 
     override fun init(x:Float, y:Float, screen_width:Float, screen_height:Float, resources: Resources) {
         x_ = x
